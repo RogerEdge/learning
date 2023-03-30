@@ -21,4 +21,4 @@ function fibSeq(
 
 const result = fibSeq(1, 1, 20, [])
 
-console.log('result', result)
+console.log('roger\'s result', result)
