@@ -8,12 +8,12 @@
 </head>
 <body>
   <!--player1 select-->
-  <select id="emoji-menu" onchange="player1 = this.value;checkForStart()">
+  <select id="emoji-menu" onchange="selectedPlayer1 = this.value;checkForStart()">
 		<option selected disabled>Choose player 1:</option>
 	</select>
 
   <!--player2 select-->
-  <select id="emoji-menu2" onchange="player2 = this.value;checkForStart()">
+  <select id="emoji-menu2" onchange="selectedPlayer2 = this.value;checkForStart()">
     <option selected disabled>Choose player 2:</option>
   </select>
 
@@ -38,6 +38,7 @@
 		</tr>
 	</table>
 	<div id="winner"></div>
+  <script src="shared-game-code.js" charset="UTF-8"></script>
   <script src="script.js" charset="UTF-8"></script>
 </body>
 </html>

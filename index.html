@@ -1,41 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Test Page</title>
-  </head>
-  <body>
-
-<br />
-
-    <a href="tictactoe.html">Play Tic Tac Toe</a>
-
-    <br />
-    <br />
-
-    <form>
-      <label for="numInput1">Enter the first number:</label>
-      <input type="number" id="numInput1">
-      <br><br>
-      <label for="numInput2">Enter the second number:</label>
-      <input type="number" id="numInput2">
-      <br><br>
-      <label for="numInput3">Enter the third number:</label>
-      <input type="number" id="numInput3">
-      <br><br>
-      <button type="button" onclick="runFunction()">Submit</button>
-    </form>
-
-    <script src="test.js"></script>
-    <script>
-      function runFunction() {
-        var num1 = document.getElementById("numInput1").value;
-        var num2 = document.getElementById("numInput2").value;
-        var num3 = document.getElementById("numInput3").value;
-        //console.log("here",typeof(num1),typeof(num2),typeof(num3),[]);
-        var result = fibSeq(Number(num1), Number(num2), Number(num3),[]);
-        alert(result);
-      }
-    </script>
-  </body>
+<head>
+	<title>Roger Edge III - Aspiring Programmer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f5f5f5;
+		}
+		header {
+			background-color: #333;
+			color: #fff;
+			padding: 20px;
+			text-align: center;
+		}
+		h1 {
+			margin: 0;
+			font-size: 36px;
+		}
+		section {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #fff;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			border-radius: 10px;
+			margin-top: 50px;
+			margin-bottom: 50px;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Roger Edge III - Aspiring Programmer</h1>
+	</header>
+	<section>
+		<h2>About Me</h2>
+		<p>Hello, my name is Roger Edge III and I am a passionate learner who is currently focused on learning to code. I am seeking a job as a programmer and I am excited to take my first steps into the tech industry.</p>
+		<p>I have always been fascinated by the power of technology and how it can change the world. As a result, I have spent countless hours teaching myself how to code in order to make a meaningful impact in this field.</p>
+		<h2>Skills</h2>
+		<ul>
+			<li>Proficient in HTML, CSS, and JavaScript</li>
+			<li>Familiar with Python, Java, and C++</li>
+			<li>Experience with Git and GitHub</li>
+			<li>Strong problem-solving skills</li>
+			<li>Excellent attention to detail</li>
+		</ul>
+		<h2>Projects</h2>
+		<ul>
+			<li><a href="tictactoe.html">Play Tic Tac Toe</a></li>
+			<li><a href="fib.html">fibonacci sequence code</a></li>
+			<li><a href="connect-4/index.html">connect-4</a></li>
+		</ul>
+		<h2>Contact Me</h2>
+		<p>If you would like to get in touch with me regarding job opportunities or collaboration on projects, please feel free to email me at <a href="mailto:roger.edge.iii@gmail.com">roger.edge.iii@gmail.com</a>.</p>
+	</section>
+</body>
 </html>
