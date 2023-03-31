@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tic Tac Toe</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="choose-emoji.css">
+  
+</head>
+<body>
+  <!--player1 select-->
+  <select id="emoji-menu" onchange="player1 = this.value;checkForStart()">
+		<option selected disabled>Choose player 1:</option>
+	</select>
+
+  <!--player2 select-->
+  <select id="emoji-menu2" onchange="player2 = this.value;checkForStart()">
+    <option selected disabled>Choose player 2:</option>
+  </select>
+
+  <br /><br />
+
+  <!--the board-->
+	<table id='board' style="display: none;">
+		<tr>
+			<td id="0"></td>
+			<td id="1"></td>
+			<td id="2"></td>
+		</tr>
+		<tr>
+			<td id="3"></td>
+			<td id="4"></td>
+			<td id="5"></td>
+		</tr>
+		<tr>
+			<td id="6"></td>
+			<td id="7"></td>
+			<td id="8"></td>
+		</tr>
+	</table>
+	<div id="winner"></div>
+  <script src="script.js" charset="UTF-8"></script>
+</body>
+</html>
