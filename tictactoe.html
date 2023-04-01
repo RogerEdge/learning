@@ -4,9 +4,14 @@
 	<title>Tic Tac Toe</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" type="text/css" href="choose-emoji.css">
-  
+  <script src="header.js" charset="UTF-8"></script>
+  <link href="document.css" rel="stylesheet" />
 </head>
 <body>
+
+	<main-header></main-header>
+	<section>
+
   <!--player1 select-->
   <select id="emoji-menu" onchange="selectedPlayer1 = this.value;checkForStart()">
 		<option selected disabled>Choose player 1:</option>
@@ -38,6 +43,7 @@
 		</tr>
 	</table>
 	<div id="winner"></div>
+</section>
   <script src="shared-game-code.js" charset="UTF-8"></script>
   <script src="script.js" charset="UTF-8"></script>
 </body>
