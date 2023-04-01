@@ -27,8 +27,10 @@ function getDropPosition(y,x){
     const currentSpace=boardMemory[i][x]
     if(currentSpace) {
       // go back one space
-      if(boardMemory[i-1] && !boardMemory[i-1][x]) {
-        return i-1
+      for (let backI = i-1; backI >=0; backI--) {
+        if(boardMemory[backI] && !boardMemory[backI][x]) {
+          return backI
+        }
       }
 
       return -1
@@ -58,7 +60,10 @@ function reportId() {
   y = getDropPosition(y,x)
 
   if(y < 0) {
-    alert('invalid move')
+    playWrongSound()
+    setTimeout(() => {
+      alert('invalid move')
+    }, 5);
     return
   }
   
@@ -66,6 +71,7 @@ function reportId() {
   boardMemory[y][x]= currentPlayer
   const id = 'row-' + (y+1) + '-col-' + (x + 1)
 
+  playMoveSound()
   onClick(id,{},checkForWinner)
 }
 
@@ -142,3 +148,23 @@ window.onload = function() {
   tds[i].addEventListener("click", reportId);
   }
 }
+
+// Create a new Audio object and set the source to your audio file
+const moveAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2894/2894-preview.mp3");
+function playMoveSound(){
+  const moveAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2894/2894-preview.mp3");
+
+// Play the audio
+moveAudio.play();
+
+}
+
+// Create a new Audio object and set the source to your audio file
+const wrongAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/101/101-preview.mp3");
+function playWrongSound(){
+
+// Play the audio
+wrongAudio.play();
+
+}
+
