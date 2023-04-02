@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="components.js" charset="UTF-8"></script>
+	<title>Roger Edge III - Aspiring Programmer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="document.css" rel="stylesheet" />
+</head>
+<body>
+	<main-header></main-header>
+	<section>
+		<form onsubmit="sendAdminLoginForm(this,event)" >
+			<input name="code"  id="adminCode" />
+			<button type="submit">Send</button>
+		</form>
+		<br />
+		<div id="share-state" style="display:none">
+			<div id="share-code"></div>
+			<button onclick="checkUserStatus()">check status</button>
+			<div id="user-status"></div>
+			
+		</div>
+	</section>
+	<script>
+		document.getElementById('adminCode').focus()
+	</script>
+</body>
+</html>

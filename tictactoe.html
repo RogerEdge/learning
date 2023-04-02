@@ -4,7 +4,7 @@
 	<title>Tic Tac Toe</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
   <link rel="stylesheet" type="text/css" href="choose-emoji.css">
-  <script src="header.js" charset="UTF-8"></script>
+  <script src="components.js" charset="UTF-8"></script>
   <link href="document.css" rel="stylesheet" />
 </head>
 <body>
@@ -13,38 +13,47 @@
 	<section>
 
   <!--player1 select-->
-  <select id="emoji-menu" onchange="selectedPlayer1 = this.value;checkForStart()">
+  <select id="select-player-1" onchange="player1Emoji = this.value;checkForStart()">
 		<option selected disabled>Choose player 1:</option>
 	</select>
 
   <!--player2 select-->
-  <select id="emoji-menu2" onchange="selectedPlayer2 = this.value;checkForStart()">
+  <select id="select-player-2" onchange="player2Emoji = this.value;checkForStart()">
     <option selected disabled>Choose player 2:</option>
   </select>
 
   <br /><br />
 
   <!--the board-->
-	<table id='board' style="display: none;">
-		<tr>
-			<td id="0"></td>
-			<td id="1"></td>
-			<td id="2"></td>
-		</tr>
-		<tr>
-			<td id="3"></td>
-			<td id="4"></td>
-			<td id="5"></td>
-		</tr>
-		<tr>
-			<td id="6"></td>
-			<td id="7"></td>
-			<td id="8"></td>
-		</tr>
-	</table>
+  	<div id="board" style="display: none;">
+		<div>
+			current player:<span id="current-player">?</span>
+		</div>
+
+
+		<table>
+			<tr>
+				<td id="0"></td>
+				<td id="1"></td>
+				<td id="2"></td>
+			</tr>
+			<tr>
+				<td id="3"></td>
+				<td id="4"></td>
+				<td id="5"></td>
+			</tr>
+			<tr>
+				<td id="6"></td>
+				<td id="7"></td>
+				<td id="8"></td>
+			</tr>
+		</table>
+
+		<button onclick="resetGame()" style="background-color: red;">reset game</button>
+	</div>
 	<div id="winner"></div>
 </section>
   <script src="shared-game-code.js" charset="UTF-8"></script>
-  <script src="script.js" charset="UTF-8"></script>
+  <script src="tictactoe.js" charset="UTF-8"></script>
 </body>
 </html>

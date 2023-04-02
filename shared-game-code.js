@@ -1,10 +1,14 @@
 let gameOver = false
-let player1 = '⚫️'
-let player2 = '🔴'
-let currentPlayer = player1;
+let player1Emoji = '⚫️'
+let player2Emoji = '🔴'
+let currentPlayer = player1Emoji;
 
 function setCurrentPlayer(player) {
   currentPlayer = player;
+}
+
+function markBoardSpace(space,currentPlayer) {
+  document.getElementById(space).innerHTML = currentPlayer;
 }
 
 function onClick(id, boardMemory, checkForWinner) {
@@ -12,13 +16,12 @@ function onClick(id, boardMemory, checkForWinner) {
   if (gameOver) {
     return
   }
-
   if (!boardMemory[id]) {
     //mark the memory space with the current player
     boardMemory[id] = currentPlayer;
     //mark the space with the current players emoji
-    document.getElementById(id).innerHTML = currentPlayer;
-    const isPlayerOne = currentPlayer === player1
+    markBoardSpace(id,currentPlayer)
+    const isPlayerOne = currentPlayer === player1Emoji
     const isGameOver = checkForWinner();
     if (isGameOver) {
       gameOver = true
@@ -31,7 +34,7 @@ function onClick(id, boardMemory, checkForWinner) {
     }
 
     //change players
-    currentPlayer = isPlayerOne ? player2 : player1;
+    currentPlayer = isPlayerOne ? player2Emoji : player1Emoji;
   }
 }
 // Create a new Audio object and set the source to your audio file
