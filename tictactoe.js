@@ -1,11 +1,8 @@
 //player 1 select emoji code
-var emojis = ["😀", "😂", "😍", "🤔", "🤢", "🤖", "🐶", "🍕", "🎉", "🔥"];
-var selectedEmojis = [];
-for (var i = 0; i < 10; i++) {
-  var randomIndex = Math.floor(Math.random() * emojis.length);
-  selectedEmojis.push(emojis[randomIndex]);
-  emojis.splice(randomIndex, 1);
-}
+var selectedEmojis = [
+  "😀", "😂", "😍", "🤔", "🤢", "🤖", "🐶", "🍕", "🎉", "🔥",
+  player1Emoji, player2Emoji
+];
 selectedEmojis.forEach(function (emoji) {
   var option = document.createElement("option");
   option.value = emoji;
@@ -14,15 +11,6 @@ selectedEmojis.forEach(function (emoji) {
 });
 
 //player 2 select emoji code
-var emojis = ["😀", "😂", "😍", "🤔", "🤢", "🤖", "🐶", "🍕", "🎉", "🔥"];
-var selectedEmojis = [];
-
-for (var i = 0; i < 10; i++) {
-  var randomIndex = Math.floor(Math.random() * emojis.length);
-  selectedEmojis.push(emojis[randomIndex]);
-  emojis.splice(randomIndex, 1);
-}
-
 selectedEmojis.forEach(function (emoji) {
   var option = document.createElement("option");
   option.value = emoji;
@@ -72,15 +60,33 @@ function checkForStart() {
   const session = getSession()
   const gameSession = getGameSession()
   //set player1 1 time and only 1 time
+
+  // Assume userType is user if its not defined. Allows a user to play by themselves
+  session.userType = session.userType || 'user'
   
   const changePlayer1 = player1Emoji && player1Emoji != gameSession.player1Emoji
   if (changePlayer1) {
     if(gameSession.player1 && gameSession.player1!==session.userType){
-      console.warn('🟠 player does not match user')
+      console.warn('🟠 player 1 does not match userType', {
+        player1Emoji: player1Emoji,
+        gameSession: {
+          player1Emoji: gameSession.player1Emoji,
+          player1: gameSession.player1,
+        },
+        userType: session.userType,
+      })
       return
     }
     gameSession.player1 = session.isAdmin ? 'admin' : 'user'
-    gameSession.player2 = session.isAdmin ?  'user' : 'admin'
+    
+    // should we assume admin is the other player?
+    if ( session.code ) {
+      gameSession.player2 = session.isAdmin ?  'user' : 'admin'
+    } else {
+      // its a local only game, no networking
+      gameSession.player2 = 'user'
+    }
+    
     gameSession.player1Emoji = player1Emoji
     saveGameSession(gameSession)
     console.info('player1 set')
@@ -89,11 +95,25 @@ function checkForStart() {
   const changePlayer2 = player2Emoji && player2Emoji != gameSession.player2Emoji
   if (changePlayer2) {
     if(gameSession.player2 && gameSession.player2!==session.userType){
-      console.warn('🟠 player 2 does not match user',gameSession.player2,session.userType )
+      console.warn('🟠 player 2 does not match userType', {
+        player2Emoji: player2Emoji,
+        gameSession: {
+          player2Emoji: gameSession.player2Emoji,
+          player2: gameSession.player2,
+        },
+        userType: session.userType,
+      })
       return
     }
     gameSession.player2 = session.isAdmin ? 'admin' : 'user'
-    gameSession.player1 = session.isAdmin ?  'user' : 'admin'
+
+    // should we assume admin is the other player?
+    if ( session.code ) {
+      gameSession.player1 = session.isAdmin ?  'user' : 'admin'
+    } else {
+      gameSession.player1 = 'user'
+    }
+
     gameSession.player2Emoji = player2Emoji
     saveGameSession(gameSession)
     console.info('player2 set')
@@ -130,6 +150,12 @@ function startGame() {
 
 function isPlayersTurn() {
   const session=getSession()
+
+  // is this just a local game and not network connected?
+  if ( !session.code ) {
+    return true // its always someones turn then
+  }
+
   const gameSession=getGameSession()
   const isAdminPlayer1=gameSession.player1==='admin'
   const isSessionAdmin=session.isAdmin
@@ -315,7 +341,9 @@ function resetGameSession() {
   delete gameSession.startedAt//=Date.now()
   gameSession.board = ["", "", "", "", "", "", "", "", ""];
   gameSession.currentPlayer = player1Emoji
+  currentPlayer = player1Emoji
   saveGameSession(gameSession)
+  updateDisplay(gameSession)
   console.info('game session reset')
 
   const selectPlayer1 = document.getElementById('select-player-1')
