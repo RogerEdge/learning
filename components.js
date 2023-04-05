@@ -104,7 +104,9 @@ function sendNsyncCode(code) {
 function getSession() {
 	localStorage.session = localStorage.session || '{}'
 	try {
-		return JSON.parse(localStorage.session)
+		const session = JSON.parse(localStorage.session)
+		// console.log('session', session)
+		return session
 	} catch (error) {
 		console.warn('🟠 the session was lost and reset')
 		localStorage.session = '{}'
@@ -170,6 +172,7 @@ function refetchUserHook(data) {
 
 let refetchInterval
 function startRefetch() {
+	console.info('refetch started')
 	refetchInterval = setInterval(() => {
 		refetch()
 	}, 2000)
@@ -184,6 +187,7 @@ function refetch() {
 		headers: {
 			'Content-Type': 'application/json'
 		},
+		//TODO: only the code is needed to be sent
 		body: JSON.stringify(session)
 	})
 		.then(async response => {
@@ -205,9 +209,9 @@ function refetch() {
 
 				session.userSession = session.userSession || {}
 				session.userSession = mergeObjects(session.userSession, data)
-				saveSession(session)
-
+				
 				refetchUserHook(session.userSession)
+				saveSession(session)
 
 				link.setAttribute('title', data.path)
 				link.setAttribute('href', data.path)
@@ -217,22 +221,35 @@ function refetch() {
 			//below is user
 			const mergedSession = mergeObjects(session, data)
 			Object.assign(session, mergedSession)
-			saveSession(session)
 			refetchUserHook(session)
+			saveSession(session)
 		})
 		.catch(error => console.error('xxx', error));
 }
 
 function getUserSession() {
 	const session = getSession()
-	return session.userSession
+	if(session.isAdmin){
+		return session.userSession
+	}
+	return session
 }
 
 function pushUserSession(userSession) {
 	// push all of my data
-	const session = getSession()
-	session.userSession = session.userSession || {}
-	session.userSession = mergeObjects(session.userSession, userSession)
+	let session = getSession()
+
+	if (session.isAdmin) {
+		session.userSession = session.userSession || {}
+		session.userSession = mergeObjects(session.userSession, userSession)
+		session.userSession.lastUpdatedAt = Date.now()
+	}else{
+		session = mergeObjects(session, userSession)
+		session.lastUpdatedAt=Date.now()
+	}
+
+	console.info('pushing data', session)
+
 	//console.log('222222session.userSession', session.userSession)
 	fetch('http://' + window.location.hostname + ':8080/push-user', {
 		method: 'POST',
@@ -248,12 +265,12 @@ function mergeObjects(obj1, obj2) {
 
 	for (let key in obj1) {
 		if (Array.isArray(obj1[key])) {
-      result[key] = obj1[key];
-      if(Array.isArray(obj2[key])){
-        result[key] = obj2[key];
-        
-      }
-    } else if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+			result[key] = obj1[key];
+			if (Array.isArray(obj2[key])) {
+				result[key] = obj2[key];
+
+			}
+		} else if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
 			result[key] = mergeObjects(obj1[key], obj2[key]);
 		} else {
 			result[key] = obj1[key];
@@ -262,7 +279,7 @@ function mergeObjects(obj1, obj2) {
 
 	for (let key in obj2) {
 		//if (!result.hasOwnProperty(key)) {
-			result[key] = obj2[key];
+		result[key] = obj2[key];
 		//}
 	}
 

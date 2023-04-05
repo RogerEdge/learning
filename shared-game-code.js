@@ -11,18 +11,19 @@ function markBoardSpace(space,currentPlayer) {
   document.getElementById(space).innerHTML = currentPlayer;
 }
 
-function onClick(id, boardMemory, checkForWinner) {
+function onClick(id, boardMemory, gameSession, checkForWinner) {
   //If the game is over, prevent anymore code from running
   if (gameOver) {
     return
   }
+
   if (!boardMemory[id]) {
     //mark the memory space with the current player
     boardMemory[id] = currentPlayer;
     //mark the space with the current players emoji
     markBoardSpace(id,currentPlayer)
     const isPlayerOne = currentPlayer === player1Emoji
-    const isGameOver = checkForWinner();
+    const isGameOver = checkForWinner(gameSession);
     if (isGameOver) {
       gameOver = true
       const winningPlayer = isPlayerOne ? 1 : 2
