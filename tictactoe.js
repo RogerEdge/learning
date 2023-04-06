@@ -24,19 +24,23 @@ function getGameSession() {
   if (session.isAdmin) {
     const userSession = getUserSession()
     if (!userSession.tictactoe) {
-      userSession.tictactoe = resetGameSession()
+      console.info('reset game session by get game session admin')
+      userSession.tictactoe = resetGameSession(session)
       pushUserSession(userSession)
     }
     return userSession.tictactoe
   }
   
-  session.tictactoe = session.tictactoe || resetGameSession()
+  if(!session.tictactoe){
+    console.info('reset game session by get game session user')
+  }
+  session.tictactoe = session.tictactoe || resetGameSession(session)
   return session.tictactoe
 }
 
-function saveGameSession(gameSession) {
+function saveGameSession(session,gameSession) {
   console.log('tttttt', gameSession)
-  const session = getSession()
+
   if (session.isAdmin) {
     session.userSession.lastUpdatedAt=Date.now()
     session.userSession.tictactoe = gameSession
@@ -56,15 +60,20 @@ function saveGameSession(gameSession) {
   saveSession(session)
 }
 
-function checkForStart() {
-  const session = getSession()
-  const gameSession = getGameSession()
-  //set player1 1 time and only 1 time
+function checkForStart(session,gameSession) {
+  if(gameSession.startedAt){
+    console.warn('game already started')
+    return
+  }
 
   // Assume userType is user if its not defined. Allows a user to play by themselves
   session.userType = session.userType || 'user'
   
+  if(player1Emoji){
+    console.log('🔴player1Emoji', player1Emoji)
+  }
   const changePlayer1 = player1Emoji && player1Emoji != gameSession.player1Emoji
+  console.log('changePlayer1', changePlayer1,player1Emoji,gameSession.player1Emoji)
   if (changePlayer1) {
     if(gameSession.player1 && gameSession.player1!==session.userType){
       console.warn('🟠 player 1 does not match userType', {
@@ -88,8 +97,8 @@ function checkForStart() {
     }
     
     gameSession.player1Emoji = player1Emoji
-    saveGameSession(gameSession)
-    console.info('player1 set')
+    saveGameSession(session,gameSession)
+    console.info('player1 set',player1Emoji)
   }
   
   const changePlayer2 = player2Emoji && player2Emoji != gameSession.player2Emoji
@@ -115,14 +124,15 @@ function checkForStart() {
     }
 
     gameSession.player2Emoji = player2Emoji
-    saveGameSession(gameSession)
-    console.info('player2 set')
+    saveGameSession(session,gameSession)
+    console.info('player2 set',player2Emoji)
   }
 
-  if (player1Emoji && player2Emoji &&
-    gameSession.player1Emoji && gameSession.player2Emoji
-  ) {
-    startGame()
+  const startReady=player1Emoji && player2Emoji &&
+  gameSession.player1Emoji && gameSession.player2Emoji
+  console.log('startReady', startReady)
+  if (startReady) {
+    startGame(session,gameSession)
   }
 }
 
@@ -136,16 +146,17 @@ function isBoardShown() {
 }
 
 //tictactoe game code
-function startGame() {
+function startGame(session,gameSession) {
   console.info('game started locally')
   // resetGame()
-  const gameSession = getGameSession()
+  //const session = getSession()
+  //const gameSession = getGameSession()
   gameSession.startedAt=Date.now()
   gameSession.currentPlayer=gameSession.player1Emoji
   updateDisplay(gameSession)
-  saveGameSession(gameSession)
+  saveGameSession(session,gameSession)
   //showBoard()
-  addListeners()
+  addListeners(session,gameSession)
 }
 
 function isPlayersTurn() {
@@ -159,7 +170,6 @@ function isPlayersTurn() {
   const gameSession=getGameSession()
   const isAdminPlayer1=gameSession.player1==='admin'
   const isSessionAdmin=session.isAdmin
-
 
   if(isAdminPlayer1 && isSessionAdmin){
     return currentPlayer===gameSession.player1Emoji
@@ -182,35 +192,41 @@ function isPlayersTurn() {
 
 
 let listening = false
-function addListeners() {
+function addListeners(session,gameSession) {
   if(listening){
     return
   }
   listening = true
-  const gameSession=getGameSession()
+  //const session=getSession()
+  //const gameSession=getGameSession()
   //add board click event listeners
   for (var i = 0; i < gameSession.board.length; i++) {
     document.getElementById(i).addEventListener("click", function(){
       //get freshest memory at click event
+      const session=getSession()
       const gameSession=getGameSession()
       const myTurn=isPlayersTurn()
       
       if(!myTurn){
-        console.warn('its not your turn')
+        console.warn('its not your turn',{
+          currentPlayer:currentPlayer,
+          you:session.isAdmin ? 'admin': 'user',
+          gameSession:gameSession
+        })
         return
       }
       const id=this.getAttribute('id')
       onClick(id, gameSession.board, gameSession, checkForWinner);
       
       gameSession.currentPlayer=currentPlayer
-      saveGameSession(gameSession)
+      saveGameSession(session,gameSession)
     })
   }
 
   gameSession.currentPlayer = gameSession.currentPlayer || player1Emoji
   setCurrentPlayer(player1Emoji)
   
-  saveGameSession(gameSession)
+  saveGameSession(session,gameSession)
   console.info('event listeners added')
 }
 
@@ -259,6 +275,7 @@ refetchUserHook = (user) => {
 
   ++refetchCount
   const session=getSession()
+  const gameSession=getGameSession()
   //gameSession.lastUpdatedAt=gameSession.lastUpdatedAt || 0
 
   const lastUpdatedAt=session.isAdmin ? session.userSession.lastUpdatedAt : session.lastUpdatedAt
@@ -266,14 +283,21 @@ refetchUserHook = (user) => {
 // console.log('outdated', outdated,lastUpdatedAt, user.lastUpdatedAt)
 
   if(outdated){
-    console.info('current memory>server')
+    console.info('server memory outdated', outdated, lastUpdatedAt-user.lastUpdatedAt)
     return 
   }
-  console.log('hook refetch', user)
+
+  //console.log('hook refetch', user)
   updateDisplay(user.tictactoe)
+
+  //game is won
+  if(user.tictactoe.winningPlayer && !gameSession.winningPlayer){
+    gameWon(gameSession,gameSession.winningPlayer)
+  }
 }
 
 function updateDisplay(user) {
+  const session=getSession()
   const gameSession = getGameSession()
   user.board=user.board || gameSession.board
   
@@ -285,10 +309,11 @@ function updateDisplay(user) {
   }
   //player1Emoji = gameSession.player1
   console.log('player1Emoji', player1Emoji)
-  if(player1Emoji){
+  if(player1Emoji && gameSession.player1Emoji){
     const selectPlayer1 = document.getElementById('select-player-1')
     selectPlayer1.value = player1Emoji
     selectPlayer1.setAttribute('disabled',true)
+    checkForStart(session,gameSession)
   }
 
   if (gameSession.player2) {
@@ -298,10 +323,11 @@ function updateDisplay(user) {
     player2Emoji = user.player2Emoji
   }
   //player2Emoji = gameSession.player2
-  if(player2Emoji){
+  if(player2Emoji && gameSession.player2Emoji){
     const selectPlayer2 = document.getElementById('select-player-2')
     selectPlayer2.value = player2Emoji
     selectPlayer2.setAttribute('disabled',true)
+    checkForStart(session,gameSession)
   }
   
   console.log('user.startedAt', user.startedAt,user)
@@ -310,7 +336,7 @@ function updateDisplay(user) {
     if(!boardShown){
       console.info('board opened by refetch')
       showBoard()
-      addListeners()
+      addListeners(session,gameSession)
     }
   }
 
@@ -323,12 +349,13 @@ function updateDisplay(user) {
 }
 
 function resetGame() {
+  const session=getSession()
   showBoard()
-  const gameSession=resetGameSession()
+  const gameSession=resetGameSession(session)
   return gameSession
 }
 
-function resetGameSession() {
+function resetGameSession(session) {
   console.info('game session resetting')
   const gameSession={} //getGameSession()
 
@@ -339,18 +366,38 @@ function resetGameSession() {
   gameSession.player1Emoji= ''
   gameSession.player2Emoji= ''
   delete gameSession.startedAt//=Date.now()
+  delete gameSession.winningPlayer
   gameSession.board = ["", "", "", "", "", "", "", "", ""];
   gameSession.currentPlayer = player1Emoji
   currentPlayer = player1Emoji
-  saveGameSession(gameSession)
+  saveGameSession(session,gameSession)
   updateDisplay(gameSession)
   console.info('game session reset')
 
-  const selectPlayer1 = document.getElementById('select-player-1')
+  /*const selectPlayer1 = document.getElementById('select-player-1')
   selectPlayer1.setAttribute('disabled',false)
   const selectPlayer2 = document.getElementById('select-player-2')
-  selectPlayer2.setAttribute('disabled',false)
+  selectPlayer2.setAttribute('disabled',false)*/
 
   return gameSession
   
+}
+
+// make sure session already started
+function paramSession() {
+  const session = getSession()
+  const gameSession = getGameSession()
+  return { session:session, gameSession: gameSession}
+}
+
+function setPlayer1(emoji) {
+  const {session,gameSession}=paramSession()
+  player1Emoji = emoji
+  checkForStart(session,gameSession)
+}
+
+function setPlayer2(emoji) {
+  const {session,gameSession}=paramSession() // ensure we have game memory
+   player2Emoji = emoji // add to game memory
+   checkForStart(session,gameSession)
 }

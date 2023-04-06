@@ -27,8 +27,9 @@ function onClick(id, boardMemory, gameSession, checkForWinner) {
     if (isGameOver) {
       gameOver = true
       const winningPlayer = isPlayerOne ? 1 : 2
-      playWinSound()
-      gameWon()
+      
+      gameWon(gameSession,winningPlayer)
+      
       setTimeout(() => {
         alert('✅ player ' + winningPlayer + ' won')
       }, 10);
@@ -47,7 +48,9 @@ function playWinSound() {
 
 }
 
-function gameWon(){
+function gameWon(gameSession,winningPlayer){
+  gameSession.winningPlayer=winningPlayer
+  playWinSound()
   const body=document.getElementsByTagName('body')[0]
   const content=`<div class="gif-overlay">
   <img class="gif-win" src="https://i.pinimg.com/originals/cf/50/6d/cf506d6998d68de01e9171f30fc4e287.gif" alt="Animated GIF">

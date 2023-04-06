@@ -13,12 +13,12 @@
 	<section>
 
   <!--player1 select-->
-  <select id="select-player-1" onchange="player1Emoji = this.value;checkForStart()">
+  <select id="select-player-1" onchange="setPlayer1(this.value)">
 		<option selected disabled>Choose player 1:</option>
 	</select>
 
   <!--player2 select-->
-  <select id="select-player-2" onchange="player2Emoji = this.value;checkForStart()">
+  <select id="select-player-2" onchange="setPlayer2(this.value)">
     <option selected disabled>Choose player 2:</option>
   </select>
 
