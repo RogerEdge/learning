@@ -18,7 +18,7 @@ const html = `
   ·
   <a href="**basePath**keywords.html">Program Experience</a>
   ·
-  <a href="**basePath**Mentorship.html">Mentorship Program</a>
+  <a href="**basePath**Mentorship.html">Mentorship</a>
   ·
   <a href="**basePath**nsync.html">NSYNC</a>
   <span id='follow-user-display' style='display:none'>
