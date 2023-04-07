@@ -243,6 +243,11 @@ function pushUserSession(userSession) {
 	// push all of my data
 	let session = getSession()
 
+	if ( !session.code ) {
+		console.warn('🟠 Not connected. Data not pushed')
+		return
+	}
+
 	if (session.isAdmin) {
 		session.userSession = session.userSession || {}
 		session.userSession = mergeObjects(session.userSession, userSession)
