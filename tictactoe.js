@@ -52,7 +52,8 @@ function saveGameSession(session,gameSession) {
   }
   
   session.tictactoe = session.tictactoe || {}
-  session.tictactoe=mergeObjects(session.tictactoe, gameSession)
+  // session.tictactoe=mergeObjects(session.tictactoe, gameSession)
+  session.tictactoe=gameSession
   session.lastUpdatedAt=Date.now()
   
   //update localstorage
@@ -136,6 +137,11 @@ function checkForStart(session,gameSession) {
   }
 }
 
+function hideBoard() {
+  const boardElement = document.getElementById('board');
+  boardElement.style.display = 'none';
+}
+
 function showBoard() {
   const boardElement = document.getElementById('board');
   boardElement.style.display = 'block';
@@ -153,9 +159,8 @@ function startGame(session,gameSession) {
   //const gameSession = getGameSession()
   gameSession.startedAt=Date.now()
   gameSession.currentPlayer=gameSession.player1Emoji
-  updateDisplay(gameSession)
+  updateDisplay(session,gameSession)
   saveGameSession(session,gameSession)
-  //showBoard()
   addListeners(session,gameSession)
 }
 
@@ -270,7 +275,7 @@ refetchUserHook = (user) => {
   //console.log('refetchCount', refetchCount,user)
   if(!refetchCount){
     console.info('first hook')
-    updateDisplay(user.tictactoe)
+    updateDisplay(user, user.tictactoe)
   }
 
   ++refetchCount
@@ -296,56 +301,52 @@ refetchUserHook = (user) => {
   }
 }
 
-function updateDisplay(user) {
-  const session=getSession()
-  const gameSession = getGameSession()
-  user.board=user.board || gameSession.board
-  
+function updateDisplay(session, gameSession) {
   if (gameSession.player1) {
     player1Emoji = gameSession.player1Emoji
   }
-  if (user.player1) {
-    player1Emoji = user.player1Emoji
-  }
-  //player1Emoji = gameSession.player1
-  console.log('player1Emoji', player1Emoji)
+
+  const selectPlayer1 = document.getElementById('select-player-1')
   if(player1Emoji && gameSession.player1Emoji){
-    const selectPlayer1 = document.getElementById('select-player-1')
     selectPlayer1.value = player1Emoji
     selectPlayer1.setAttribute('disabled',true)
     checkForStart(session,gameSession)
+  } else {
+    selectPlayer1.removeAttribute('disabled')
+    selectPlayer1.value = ''
   }
 
   if (gameSession.player2) {
     player2Emoji = gameSession.player2Emoji
   }
-  if (user.player2) {
-    player2Emoji = user.player2Emoji
-  }
-  //player2Emoji = gameSession.player2
+
+  const selectPlayer2 = document.getElementById('select-player-2')
   if(player2Emoji && gameSession.player2Emoji){
-    const selectPlayer2 = document.getElementById('select-player-2')
     selectPlayer2.value = player2Emoji
     selectPlayer2.setAttribute('disabled',true)
     checkForStart(session,gameSession)
+  } else {
+    selectPlayer2.removeAttribute('disabled')
+    selectPlayer2.value = ''
   }
-  
-  console.log('user.startedAt', user.startedAt,user)
-  if(user.startedAt){
+
+  if(gameSession.startedAt){
     const boardShown=isBoardShown()
     if(!boardShown){
       console.info('board opened by refetch')
       showBoard()
       addListeners(session,gameSession)
     }
+  } else {
+    hideBoard()
   }
 
-  user.board.forEach((space,i) => {
+  gameSession.board.forEach((space,i) => {
     markBoardSpace(i, space)
   })
 
-  currentPlayer=user.currentPlayer
-  document.getElementById('current-player').innerHTML=user.currentPlayer
+  currentPlayer=gameSession.currentPlayer
+  document.getElementById('current-player').innerHTML=gameSession.currentPlayer
 }
 
 function resetGame() {
@@ -371,13 +372,8 @@ function resetGameSession(session) {
   gameSession.currentPlayer = player1Emoji
   currentPlayer = player1Emoji
   saveGameSession(session,gameSession)
-  updateDisplay(gameSession)
+  updateDisplay(session,gameSession)
   console.info('game session reset')
-
-  /*const selectPlayer1 = document.getElementById('select-player-1')
-  selectPlayer1.setAttribute('disabled',false)
-  const selectPlayer2 = document.getElementById('select-player-2')
-  selectPlayer2.setAttribute('disabled',false)*/
 
   return gameSession
   
@@ -392,12 +388,14 @@ function paramSession() {
 
 function setPlayer1(emoji) {
   const {session,gameSession}=paramSession()
-  player1Emoji = emoji
+  gameSession.player1Emoji = player1Emoji = emoji
   checkForStart(session,gameSession)
+  updateDisplay(session,gameSession)
 }
 
 function setPlayer2(emoji) {
   const {session,gameSession}=paramSession() // ensure we have game memory
-   player2Emoji = emoji // add to game memory
-   checkForStart(session,gameSession)
+  gameSession.player2Emoji = player2Emoji = emoji
+  checkForStart(session,gameSession)
+  updateDisplay(session,gameSession)
 }
