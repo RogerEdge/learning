@@ -7,8 +7,19 @@ function setCurrentPlayer(player) {
   currentPlayer = player;
 }
 
-function markBoardSpace(space,currentPlayer) {
+// Create a new Audio object and set the source to your audio file
+const moveAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2894/2894-preview.mp3");
+function playMoveSound() {
+  const moveAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2894/2894-preview.mp3");
+
+  // Play the audio
+  moveAudio.play();
+
+}
+
+function markBoardSpace(space, currentPlayer) {
   document.getElementById(space).innerHTML = currentPlayer;
+  playMoveSound()
 }
 
 function onClick(id, boardMemory, gameSession, checkForWinner) {
@@ -21,15 +32,15 @@ function onClick(id, boardMemory, gameSession, checkForWinner) {
     //mark the memory space with the current player
     boardMemory[id] = currentPlayer;
     //mark the space with the current players emoji
-    markBoardSpace(id,currentPlayer)
+    markBoardSpace(id, currentPlayer)
     const isPlayerOne = currentPlayer === player1Emoji
     const isGameOver = checkForWinner(gameSession);
     if (isGameOver) {
       gameOver = true
       const winningPlayer = isPlayerOne ? 1 : 2
-      
-      gameWon(gameSession,winningPlayer)
-      
+
+      gameWon(gameSession, winningPlayer)
+
       setTimeout(() => {
         alert('✅ player ' + winningPlayer + ' won')
       }, 10);
@@ -48,17 +59,17 @@ function playWinSound() {
 
 }
 
-function gameWon(gameSession,winningPlayer){
-  gameSession.winningPlayer=winningPlayer
+function gameWon(gameSession, winningPlayer) {
+  gameSession.winningPlayer = winningPlayer
   playWinSound()
-  const body=document.getElementsByTagName('body')[0]
-  const content=`<div class="gif-overlay">
+  const body = document.getElementsByTagName('body')[0]
+  const content = `<div class="gif-overlay">
   <img class="gif-win" src="https://i.pinimg.com/originals/cf/50/6d/cf506d6998d68de01e9171f30fc4e287.gif" alt="Animated GIF">
   </div>
 `
-  const newElement=document.createElement('div')
-  newElement.innerHTML=content
-  
+  const newElement = document.createElement('div')
+  newElement.innerHTML = content
+
   body.appendChild(newElement)
 
   setTimeout(() => {

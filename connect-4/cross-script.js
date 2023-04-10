@@ -8,27 +8,27 @@ const boardMemory = [
   ['', '', '', '', '', '', ''], // 5
 ];
 
-function convertIdToPositions(string){
+function convertIdToPositions(string) {
 
   // Split the string into parts based on the "-" separator
-const parts = string.split("-");
+  const parts = string.split("-");
 
-// Extract the numbers from the parts
-const y = parseInt(parts[1]);
-const x = parseInt(parts[3]);
+  // Extract the numbers from the parts
+  const y = parseInt(parts[1]);
+  const x = parseInt(parts[3]);
   return {
-    x:x-1,y:y-1
+    x: x - 1, y: y - 1
   }
 }
 
-function getDropPosition(y,x){
-  const length=boardMemory.length
-  for (let i = y; i < length; i++) {    
-    const currentSpace=boardMemory[i][x]
-    if(currentSpace) {
+function getDropPosition(y, x) {
+  const length = boardMemory.length
+  for (let i = y; i < length; i++) {
+    const currentSpace = boardMemory[i][x]
+    if (currentSpace) {
       // go back one space
-      for (let backI = i-1; backI >=0; backI--) {
-        if(boardMemory[backI] && !boardMemory[backI][x]) {
+      for (let backI = i - 1; backI >= 0; backI--) {
+        if (boardMemory[backI] && !boardMemory[backI][x]) {
           return backI
         }
       }
@@ -36,12 +36,12 @@ function getDropPosition(y,x){
       return -1
     }
 
-    
-    const isNotTooFar=i<length-1
+
+    const isNotTooFar = i < length - 1
     // if its not the end then run the code in me
-    if(isNotTooFar){
-      const nextSpace=boardMemory[i+1][x]
-      if(nextSpace){
+    if (isNotTooFar) {
+      const nextSpace = boardMemory[i + 1][x]
+      if (nextSpace) {
         return i //solved the hunt
       }
 
@@ -50,44 +50,44 @@ function getDropPosition(y,x){
 
     //we have reached the last space
   }
-  return length-1
+  return length - 1
 }
 
 function reportId() {
-  const positions=convertIdToPositions(this.id)
-  const x =positions.x  
-  let y = positions.y 
-  y = getDropPosition(y,x)
+  const positions = convertIdToPositions(this.id)
+  const x = positions.x
+  let y = positions.y
+  y = getDropPosition(y, x)
 
-  if(y < 0) {
+  if (y < 0) {
     playWrongSound()
     setTimeout(() => {
       alert('invalid move')
     }, 5);
     return
   }
-  
+
   //this is where the players space is marked
-  boardMemory[y][x]= currentPlayer
-  const id = 'row-' + (y+1) + '-col-' + (x + 1)
+  boardMemory[y][x] = currentPlayer
+  const id = 'row-' + (y + 1) + '-col-' + (x + 1)
 
-  playMoveSound()
-  onClick(id,{},checkForWinner)
+  //playMoveSound()
+  onClick(id, {}, checkForWinner)
 }
 
-function checkForWinner(){
-  const didWin1=checkForWinnerBy(player1)
-  if(didWin1){
+function checkForWinner() {
+  const didWin1 = checkForWinnerBy(player1)
+  if (didWin1) {
     return true
   }
-  
-  const didWin2=checkForWinnerBy(player2)
-  if(didWin2){
+
+  const didWin2 = checkForWinnerBy(player2)
+  if (didWin2) {
     return true
   }
 }
 
-function checkForWinnerBy(matchValue){
+function checkForWinnerBy(matchValue) {
 
   // Define the size of the grid
   const numRows = 6;
@@ -97,9 +97,9 @@ function checkForWinnerBy(matchValue){
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols - 3; col++) {
       if (boardMemory[row][col] === matchValue &&
-          boardMemory[row][col + 1] === matchValue &&
-          boardMemory[row][col + 2] === matchValue &&
-          boardMemory[row][col + 3] === matchValue) {
+        boardMemory[row][col + 1] === matchValue &&
+        boardMemory[row][col + 2] === matchValue &&
+        boardMemory[row][col + 3] === matchValue) {
         return true
       }
     }
@@ -109,9 +109,9 @@ function checkForWinnerBy(matchValue){
   for (let row = 0; row < numRows - 3; row++) {
     for (let col = 0; col < numCols; col++) {
       if (boardMemory[row][col] === matchValue &&
-          boardMemory[row + 1][col] === matchValue &&
-          boardMemory[row + 2][col] === matchValue &&
-          boardMemory[row + 3][col] === matchValue) {
+        boardMemory[row + 1][col] === matchValue &&
+        boardMemory[row + 2][col] === matchValue &&
+        boardMemory[row + 3][col] === matchValue) {
         return true
       }
     }
@@ -121,9 +121,9 @@ function checkForWinnerBy(matchValue){
   for (let row = 0; row < numRows - 3; row++) {
     for (let col = 0; col < numCols - 3; col++) {
       if (boardMemory[row][col] === matchValue &&
-          boardMemory[row + 1][col + 1] === matchValue &&
-          boardMemory[row + 2][col + 2] === matchValue &&
-          boardMemory[row + 3][col + 3] === matchValue) {
+        boardMemory[row + 1][col + 1] === matchValue &&
+        boardMemory[row + 2][col + 2] === matchValue &&
+        boardMemory[row + 3][col + 3] === matchValue) {
         return true
       }
     }
@@ -133,38 +133,28 @@ function checkForWinnerBy(matchValue){
   for (let row = 3; row < numRows; row++) {
     for (let col = 0; col < numCols - 3; col++) {
       if (boardMemory[row][col] === matchValue &&
-          boardMemory[row - 1][col + 1] === matchValue &&
-          boardMemory[row - 2][col + 2] === matchValue &&
-          boardMemory[row - 3][col + 3] === matchValue) {
-            return true
+        boardMemory[row - 1][col + 1] === matchValue &&
+        boardMemory[row - 2][col + 2] === matchValue &&
+        boardMemory[row - 3][col + 3] === matchValue) {
+        return true
       }
     }
   }
 }
 
-window.onload = function() {
+window.onload = function () {
   var tds = document.getElementsByTagName("td");
   for (var i = 0; i < tds.length; i++) {
-  tds[i].addEventListener("click", reportId);
+    tds[i].addEventListener("click", reportId);
   }
 }
 
 // Create a new Audio object and set the source to your audio file
-const moveAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2894/2894-preview.mp3");
-function playMoveSound(){
-  const moveAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2894/2894-preview.mp3");
-
-// Play the audio
-moveAudio.play();
-
-}
-
-// Create a new Audio object and set the source to your audio file
 const wrongAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/101/101-preview.mp3");
-function playWrongSound(){
+function playWrongSound() {
 
-// Play the audio
-wrongAudio.play();
+  // Play the audio
+  wrongAudio.play();
 
 }
 
