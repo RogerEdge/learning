@@ -17,9 +17,15 @@ function playMoveSound() {
 
 }
 
+// update display and play a sound
+function claimBoardSpace(space, currentPlayer) {
+  markBoardSpace(space, currentPlayer)
+  playMoveSound()
+}
+
+// called just to update display only (no sound)
 function markBoardSpace(space, currentPlayer) {
   document.getElementById(space).innerHTML = currentPlayer;
-  playMoveSound()
 }
 
 function onClick(id, boardMemory, gameSession, checkForWinner) {
@@ -31,8 +37,10 @@ function onClick(id, boardMemory, gameSession, checkForWinner) {
   if (!boardMemory[id]) {
     //mark the memory space with the current player
     boardMemory[id] = currentPlayer;
-    //mark the space with the current players emoji
-    markBoardSpace(id, currentPlayer)
+    
+    // claim the space with the current players emoji and play sound
+    claimBoardSpace(id, currentPlayer)
+    
     const isPlayerOne = currentPlayer === player1Emoji
     const isGameOver = checkForWinner(gameSession);
     if (isGameOver) {

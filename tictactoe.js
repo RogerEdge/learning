@@ -293,7 +293,7 @@ refetchUserHook = (user) => {
   }
 
   //console.log('hook refetch', user)
-  updateDisplay(user.tictactoe)
+  updateDisplay(user, user.tictactoe)
 
   //game is won
   if(user.tictactoe.winningPlayer && !gameSession.winningPlayer){
