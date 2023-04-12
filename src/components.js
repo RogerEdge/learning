@@ -14,7 +14,7 @@ const html = `
   <div class='menu'>
   <small><a href="mailto:lilroger316@gmail.com">lilroger316@gmail.com</a></small>
   ·
-  <a href="**basePath**/">Home</a>
+  <a href="**basePath**home">Home</a>
   ·
   <a href="**basePath**keywords">Program Experience</a>
   ·

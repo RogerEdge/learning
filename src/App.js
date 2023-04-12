@@ -13,17 +13,18 @@ import { Connect4 } from './connect-4/Connect4';
 function App() {
   return (
     <div className="App">
-      <main-header></main-header>
+      <main-header basePath="/learning/"></main-header>
       <section>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/keywords" element={<Keywords />} />
-          <Route path="/mentorship" element={<Mentorship />} />
-          <Route path="/nsync" element={<NSYNC />} />
-          <Route path="/fib" element={<Fib />} />
-          <Route path="/tictactoe" element={<Tictactoe />} />
-          <Route path="/connect-4" element={<Connect4 />} />
+        <Routes basename="/learning">
+          <Route exact path="/learning/" element={<Home />} />
+          <Route exact path="/learning/home" element={<Home />} />
+          <Route path="/learning/admin" element={<Admin />} />
+          <Route path="/learning/keywords" element={<Keywords />} />
+          <Route path="/learning/mentorship" element={<Mentorship />} />
+          <Route path="/learning/nsync" element={<NSYNC />} />
+          <Route path="/learning/fib" element={<Fib />} />
+          <Route path="/learning/tictactoe" element={<Tictactoe />} />
+          <Route path="/learning/connect-4" element={<Connect4 />} />
         </Routes>
       </section>
     </div>

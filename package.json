@@ -1,5 +1,6 @@
 {
   "name": "my-app",
+  "homepage": "/learning",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,10 +16,14 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "npm run build && gh-pages -d build && npm run deploy:gh-pages",
-    "deploy:gh-pages": "npm run copy:404 && cp -r build/* ../gh-pages/ &&  npm run push:gh-pages",
+    
+    
+    "build:gh-pages":"npm run build && npm run copy:404 && cp -r build/* ../gh-pages/",
+    "deploy": "npm run build:gh-pages && npm run push:gh-pages",
     "push:gh-pages": "cd ../gh-pages && git add . && git commit -m \"release\" && git push",
     "copy:404": "cp build/index.html build/404.html",
+
+
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
