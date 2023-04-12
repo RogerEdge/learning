@@ -1,0 +1,6 @@
+{
+  "liveServer.settings.mount": [
+    ["/learning", "."]
+],
+  "liveServer.settings.file":"index.html"
+}
