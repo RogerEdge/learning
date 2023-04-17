@@ -59,7 +59,7 @@ section {
 }
 
 .flex-wrap {
-	display: flex-wrap;
+	flex-wrap: wrap;
 }
 
 .flex1 {
