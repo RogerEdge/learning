@@ -15,9 +15,9 @@ export function Mentorship() {
     <div>
       <div className="center">
         <h2>Mentorship by Acker Apple until 2029</h2>
-        <div class="centeredContent">
+        <div className="centeredContent">
           <div>
-            <img src="assets/profile_photo_low.jpg" alt="Roger img" className="img profileImage" />
+            <img src="/assets/profile_photo_low.jpg" alt="Roger img" className="img profileImage" />
             <div>Roger Edge</div>
           </div>
           <span className="largePlus">+</span>

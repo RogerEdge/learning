@@ -16,8 +16,8 @@ function App() {
       <main-header basePath="/learning/"></main-header>
       <section>
         <Routes basename="/learning">
-          <Route exact path="/learning/" element={<Home />} />
-          <Route exact path="/learning/home" element={<Home />} />
+          <Route path="/learning/" element={<Home />} />
+          <Route path="/learning/home" element={<Home />} />
           <Route path="/learning/admin" element={<Admin />} />
           <Route path="/learning/keywords" element={<Keywords />} />
           <Route path="/learning/mentorship" element={<Mentorship />} />
@@ -25,6 +25,7 @@ function App() {
           <Route path="/learning/fib" element={<Fib />} />
           <Route path="/learning/tictactoe" element={<Tictactoe />} />
           <Route path="/learning/connect-4" element={<Connect4 />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </section>
     </div>

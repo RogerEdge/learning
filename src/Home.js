@@ -17,9 +17,9 @@ export function Home() {
 		</ul>
 		<h2>Projects</h2>
 		<ul>
-			<li><a href="tictactoe">Play Tic Tac Toe</a></li>
-			<li><a href="fib">fibonacci sequence code</a></li>
-			<li><a href="connect-4">connect-4</a></li>
+			<li><a href="/learning/tictactoe">Play Tic Tac Toe</a></li>
+			<li><a href="/learning/fib">fibonacci sequence code</a></li>
+			<li><a href="/learning/connect-4">connect-4</a></li>
 		</ul>
 		<h2>Contact Me</h2>
 		<p>If you would like to get in touch with me regarding job opportunities or collaboration on projects, please feel free to email me at <a href="mailto:lilroger316@gmail.com">lilroger316@gmail.com</a>.</p>
