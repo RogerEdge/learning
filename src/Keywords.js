@@ -39,7 +39,9 @@ export function Keywords() {
           </div>
           <span>
             React
-            <div>⭐️</div>
+            <div>⭐️ ⭐️ ⭐️</div>
+            <a href="https://github.com/RogerEdge/learning/blob/src/src/App.js"
+              className={"link"}>Click Here</a>
           </span>
         </div>
         <div>
@@ -96,7 +98,7 @@ export function Keywords() {
           </div>
           <span>
             Full Stack
-            <div>⭐️ ⭐️</div>
+            <div>⭐️ ⭐️ ⭐️</div>
           </span>
         </div>
         <div>
