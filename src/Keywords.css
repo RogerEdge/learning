@@ -3,10 +3,10 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  text-align: center;
+  /*text-align: center;*/
   margin: 2rem;
   max-width: 800px;
-  gap: 3rem;
+  gap: 6rem;
 }
 
 .container>div {

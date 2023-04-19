@@ -5,18 +5,18 @@ export function Home() {
 
 	return (
 		<div>
-			<div className="centeredContent center">
-          <div>
-            <img src="/assets/profile_photo_low.jpg" alt="Roger img" className="img profileImage" />
-            <div>Roger Edge</div>
-          </div>
-        </div>
+			<div className="centeredContent center" style={{position: "relative", height: "14vw", "max-height": "125px"}}>
+				<div style={{position: "absolute"}}>
+					<img src="/assets/profile_photo_low.jpg" alt="Roger img" className="img profileImage" />
+					<div>Roger Edge</div>
+				</div>
+			</div>
 			<div>
 				<h2 onClick={handleClick}>About Me</h2>
 			</div>
 			<p>Hello, my name is Roger Edge III and I am a passionate learner who is currently focused on learning to code. I am seeking a job as a programmer and I am excited to take my first steps into the tech industry.</p>
 			<p>I have always been fascinated by the power of technology and how it can change the world. As a result, I have spent countless hours teaching myself how to code in order to make a meaningful impact in this field.</p>
-			<br/>
+			<br />
 			<h2>Skills</h2>
 			<ul>
 				<li>Proficient in HTML, CSS, and JavaScript</li>
