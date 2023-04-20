@@ -5,8 +5,8 @@ export function Home() {
 
 	return (
 		<div>
-			<div className="centeredContent center" style={{position: "relative", height: "14vw", "max-height": "125px"}}>
-				<div style={{position: "absolute"}}>
+			<div className="centeredContent center" style={{ position: "relative", height: "14vw", "max-height": "125px" }}>
+				<div style={{ position: "absolute" }}>
 					<img src="/assets/profile_photo_low.jpg" alt="Roger img" className="img profileImage" />
 					<div>Roger Edge</div>
 				</div>
@@ -30,22 +30,28 @@ export function Home() {
 			<div>
 				<div class="flex flex-wrap center">
 					<div class="flex1">
-						<div>
-							<img src="https://static.thenounproject.com/png/4035212-200.png" width="200" alt="" border="0" />
-						</div>
-						<a href="/learning/tictactoe">Play Tic Tac Toe</a>
+						<a href="/learning/tictactoe">
+							<div>
+								<img src="https://static.thenounproject.com/png/4035212-200.png" width="200" alt="" border="0" />
+							</div>
+							Play Tic Tac Toe
+						</a>
 					</div>
 					<div class="flex1">
-						<div>
-							<img src="https://static.thenounproject.com/png/1751844-200.png" width="200" alt="" border="0" />
-						</div>
-						<a href="/learning/fib">fibonacci sequence code</a>
+						<a href="/learning/fib">
+							<div>
+								<img src="https://static.thenounproject.com/png/1751844-200.png" width="200" alt="" border="0" />
+							</div>
+							fibonacci sequence code
+						</a>
 					</div>
 					<div class="flex1">
-						<div>
-							<img src="https://static.thenounproject.com/png/5132387-200.png" width="200" alt="" border="0" />
-						</div>
-						<a href="/learning/connect-4">connect-4</a>
+						<a href="/learning/connect-4">
+							<div>
+								<img src="https://static.thenounproject.com/png/5132387-200.png" width="200" alt="" border="0" />
+							</div>
+							connect-4
+						</a>
 					</div>
 				</div>
 			</div>
