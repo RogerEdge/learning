@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import "./Connect4.css"
 import { load } from "./cross-script"
+import { PlayerSelects } from "../PlayerSelects"
 
 export function Connect4() {
   useEffect(()=>{
@@ -8,6 +9,7 @@ export function Connect4() {
   },[])
   return (
     <div>
+      <PlayerSelects></PlayerSelects>
       <table>
         <tbody>
 

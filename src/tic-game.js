@@ -1,29 +1,6 @@
 import { getSession, getUserSession, pushUserSession, saveSession, setUserHook } from "./components";
 import { gameWon, getCurrentPlayer, getPlayer1Emoji, getPlayer2Emoji, markBoardSpace, onClick, setCurrentPlayer, setPlayer1Emoji, setPlayer2Emoji } from "./shared-game-code";
 
-export function loadDisplay() {
-
-  //player 1 select emoji code
-  var selectedEmojis = [
-    "😀", "😂", "😍", "🤔", "🤢", "🤖", "🐶", "🍕", "🎉", "🔥",
-    getPlayer1Emoji(), getPlayer2Emoji()
-  ];
-  selectedEmojis.forEach(function (emoji) {
-    var option = document.createElement("option");
-    option.value = emoji;
-    option.text = emoji;
-    document.getElementById("select-player-1").appendChild(option);
-  });
-
-  //player 2 select emoji code
-  selectedEmojis.forEach(function (emoji) {
-    var option = document.createElement("option");
-    option.value = emoji;
-    option.text = emoji;
-    document.getElementById("select-player-2").appendChild(option);
-  });
-}
-
 function getGameSession() {
   const session = getSession()
 

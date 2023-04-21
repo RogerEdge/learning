@@ -1,13 +1,10 @@
-import { useEffect } from "react";
-import { loadDisplay, resetGame, setPlayer1, setPlayer2 } from "./tic-game"
+import { PlayerSelects } from './PlayerSelects.js'
+import { resetGame, setPlayer1, setPlayer2 } from "./tic-game"
 
 import "./tic-style.css"
 import "./choose-emoji.css"
 
 export function Tictactoe() {
-  useEffect(() => {
-    loadDisplay();
-  }, []);
 
   const handleReset=()=> {
     resetGame()
@@ -25,15 +22,7 @@ export function Tictactoe() {
 
   return (
     <div>
-      {/*player1 select*/}
-      <select id="select-player-1" onChange={handleSetPlayer1}>
-        <option disabled>Choose player 1:</option>
-      </select>
-
-      {/*player2 select*/}
-      <select id="select-player-2" onChange={handleSetPlayer2}>
-        <option disabled>Choose player 2:</option>
-      </select>
+      <PlayerSelects handleSetPlayer1={handleSetPlayer1} handleSetPlayer2={handleSetPlayer2}></PlayerSelects>
 
       <br /><br />
 
