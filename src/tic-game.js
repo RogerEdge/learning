@@ -1,27 +1,7 @@
-import { getSession, getUserSession, pushUserSession, saveSession, setUserHook } from "./components";
-import { gameWon, getCurrentPlayer, getPlayer1Emoji, getPlayer2Emoji, markBoardSpace, onClick, setCurrentPlayer, setPlayer1Emoji, setPlayer2Emoji } from "./shared-game-code";
+import { pushUserSession, saveSession, setUserHook } from "./components";
+import { gameWon, getCurrentPlayer, getPlayer1Emoji, getPlayer2Emoji, markBoardSpace, onClick, setCurrentPlayer, setPlayer1Emoji, setPlayer2Emoji, getGameSession, resetGameSession, paramSession, getSession } from "./shared-game-code";
 
-function getGameSession() {
-  const session = getSession()
-
-  if (session.isAdmin) {
-    const userSession = getUserSession()
-    if (!userSession.tictactoe) {
-      console.info('reset game session by get game session admin')
-      userSession.tictactoe = resetGameSession(session)
-      pushUserSession(userSession)
-    }
-    return userSession.tictactoe
-  }
-
-  if (!session.tictactoe) {
-    console.info('reset game session by get game session user')
-  }
-  session.tictactoe = session.tictactoe || resetGameSession(session)
-  return session.tictactoe
-}
-
-function saveGameSession(session, gameSession) {
+export function saveGameSession(session, gameSession) {
   console.log('tttttt', gameSession)
 
   if (session.isAdmin) {
@@ -254,39 +234,9 @@ function disableBoard() {
   }
 }
 
-let refetchCount = 0
-//every 2s new info is brought in
-setUserHook((user) => {
-  //console.log('refetchCount', refetchCount,user)
-  if (!refetchCount) {
-    console.info('first hook')
-    updateDisplay(user, user.tictactoe)
-  }
 
-  ++refetchCount
-  const session = getSession()
-  const gameSession = getGameSession()
-  //gameSession.lastUpdatedAt=gameSession.lastUpdatedAt || 0
 
-  const lastUpdatedAt = session.isAdmin ? session.userSession.lastUpdatedAt : session.lastUpdatedAt
-  const outdated = lastUpdatedAt >= user.lastUpdatedAt
-  // console.log('outdated', outdated,lastUpdatedAt, user.lastUpdatedAt)
-
-  if (outdated) {
-    console.info('server memory outdated', outdated, lastUpdatedAt - user.lastUpdatedAt)
-    return
-  }
-
-  //console.log('hook refetch', user)
-  updateDisplay(user.tictactoe)
-
-  //game is won
-  if (user.tictactoe.winningPlayer && !gameSession.winningPlayer) {
-    gameWon(gameSession, gameSession.winningPlayer)
-  }
-})
-
-function updateDisplay(session, gameSession) {
+export function updateDisplay(session, gameSession) {
   if (gameSession.player1) {
     setPlayer1Emoji(gameSession.player1Emoji)
   }
@@ -341,36 +291,6 @@ export function resetGame() {
   return gameSession
 }
 
-function resetGameSession(session) {
-  console.info('game session resetting')
-  const gameSession = {} //getGameSession()
-
-  gameSession.player1 = ''
-  gameSession.player2 = ''
-  setPlayer1Emoji()
-  setPlayer2Emoji() 
-  gameSession.player1Emoji = ''
-  gameSession.player2Emoji = ''
-  delete gameSession.startedAt//=Date.now()
-  delete gameSession.winningPlayer
-  gameSession.board = ["", "", "", "", "", "", "", "", ""];
-  gameSession.currentPlayer = getPlayer1Emoji()
-  setCurrentPlayer(getPlayer1Emoji())
-  saveGameSession(session, gameSession)
-  updateDisplay(session, gameSession)
-  console.info('game session reset')
-
-  return gameSession
-
-}
-
-// make sure session already started
-function paramSession() {
-  const session = getSession()
-  const gameSession = getGameSession()
-  return { session: session, gameSession: gameSession }
-}
-
 export function setPlayer1(emoji) {
   const { session, gameSession } = paramSession()
   setPlayer1Emoji(gameSession.player1Emoji = emoji)
@@ -383,4 +303,37 @@ export function setPlayer2(emoji) {
   setPlayer2Emoji(gameSession.player2Emoji = emoji)
   checkForStart(session, gameSession)
   updateDisplay(session, gameSession)
+}
+export function load() {
+  let refetchCount = 0
+  //every 2s new info is brought in
+  setUserHook((user) => {
+    //console.log('refetchCount', refetchCount,user)
+    if (!refetchCount) {
+      console.info('first hook')
+      updateDisplay(user, user.tictactoe)
+    }
+
+    ++refetchCount
+    const session = getSession()
+    const gameSession = getGameSession()
+    //gameSession.lastUpdatedAt=gameSession.lastUpdatedAt || 0
+
+    const lastUpdatedAt = session.isAdmin ? session.userSession.lastUpdatedAt : session.lastUpdatedAt
+    const outdated = lastUpdatedAt >= user.lastUpdatedAt
+    // console.log('outdated', outdated,lastUpdatedAt, user.lastUpdatedAt)
+
+    if (outdated) {
+      console.info('server memory outdated', outdated, lastUpdatedAt - user.lastUpdatedAt)
+      return
+    }
+
+    //console.log('hook refetch', user)
+    updateDisplay(user.tictactoe)
+
+    //game is won
+    if (user.tictactoe.winningPlayer && !gameSession.winningPlayer) {
+      gameWon(gameSession, gameSession.winningPlayer)
+    }
+  })
 }

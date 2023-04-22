@@ -1,14 +1,38 @@
+import { getUserSession, pushUserSession } from "./components"
+import { saveGameSession, updateDisplay } from "./tic-game"
+
 let gameOver = false
+
+export function getGameSession() {
+  const session = getSession()
+
+  if (session.isAdmin) {
+    const userSession = getUserSession()
+    if (!userSession.tictactoe) {
+      console.info('reset game session by get game session admin')
+      userSession.tictactoe = resetGameSession(session)
+      pushUserSession(userSession)
+    }
+    return userSession.tictactoe
+  }
+
+  if (!session.tictactoe) {
+    console.info('reset game session by get game session user')
+  }
+  session.tictactoe = session.tictactoe || resetGameSession(session)
+  return session.tictactoe
+}
+
 export let player1Emoji = '⚫️'
 export let player2Emoji = '🔴'
 export let currentPlayer = player1Emoji;
 
 export function setPlayer1Emoji(emoji) {
-  player1Emoji=emoji
+  player1Emoji = emoji
 }
 
 export function setPlayer2Emoji(emoji) {
-  player2Emoji=emoji
+  player2Emoji = emoji
 }
 
 export function getPlayer1Emoji() {
@@ -20,7 +44,7 @@ export function getPlayer2Emoji() {
 }
 
 export function getCurrentPlayer() {
-    return currentPlayer
+  return currentPlayer
 }
 
 export function setCurrentPlayer(player) {
@@ -59,10 +83,10 @@ export function onClick(
   if (!boardMemory[id]) {
     //mark the memory space with the current player
     boardMemory[id] = currentPlayer;
-    
+
     // claim the space with the current players emoji and play sound
     claimBoardSpace(id, currentPlayer)
-    
+
     const isPlayerOne = currentPlayer === player1Emoji
     const isGameOver = checkForWinner(gameSession);
     if (isGameOver) {
@@ -110,3 +134,46 @@ export function gameWon(gameSession, winningPlayer) {
 const imgUrl = 'https://i.pinimg.com/originals/cf/50/6d/cf506d6998d68de01e9171f30fc4e287.gif';
 const img = new Image();
 img.src = imgUrl;
+
+export function resetGameSession(session) {
+  console.info('game session resetting')
+  const gameSession = {} //getGameSession()
+
+  gameSession.player1 = ''
+  gameSession.player2 = ''
+  setPlayer1Emoji()
+  setPlayer2Emoji()
+  gameSession.player1Emoji = ''
+  gameSession.player2Emoji = ''
+  delete gameSession.startedAt//=Date.now()
+  delete gameSession.winningPlayer
+  gameSession.board = ["", "", "", "", "", "", "", "", ""];
+  gameSession.currentPlayer = getPlayer1Emoji()
+  setCurrentPlayer(getPlayer1Emoji())
+  saveGameSession(session, gameSession)
+  updateDisplay(session, gameSession)
+  console.info('game session reset')
+
+  return gameSession
+
+}
+
+// make sure session already started
+export function paramSession() {
+  const session = getSession()
+  const gameSession = getGameSession()
+  return { session: session, gameSession: gameSession }
+}
+
+export function getSession() {
+	localStorage.session = localStorage.session || '{}'
+	try {
+		const session = JSON.parse(localStorage.session)
+		// console.log('session', session)
+		return session
+	} catch (error) {
+		console.warn('🟠 the session was lost and reset')
+		localStorage.session = '{}'
+		return JSON.parse(localStorage.session)
+	}
+}

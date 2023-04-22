@@ -1,3 +1,5 @@
+import { getSession } from "./shared-game-code"
+
 function load() {
 	const session = getSession()
 	if (session.code) {
@@ -99,18 +101,7 @@ function sendNsyncCode(code) {
 		.catch(error => console.error(error));
 }
 
-export function getSession() {
-	localStorage.session = localStorage.session || '{}'
-	try {
-		const session = JSON.parse(localStorage.session)
-		// console.log('session', session)
-		return session
-	} catch (error) {
-		console.warn('🟠 the session was lost and reset')
-		localStorage.session = '{}'
-		return JSON.parse(localStorage.session)
-	}
-}
+
 
 export function saveSession(session) {
 	if (!session) {
