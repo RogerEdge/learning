@@ -1,30 +1,35 @@
 import { PlayerSelects } from './PlayerSelects.js'
-import { load, resetGame, setPlayer1, setPlayer2 } from "./tic-game"
+import { ReactTic } from "./tic-game"
 
 import "./tic-style.css"
 import "./choose-emoji.css"
-import { useState } from 'react'
-import { getGameSession } from './shared-game-code.js'
+import { useEffect, useState } from 'react'
 
+
+let reactTic;
 export function Tictactoe() {
-  load()
-
-  const [gameSession,setGameSession]=useState(getGameSession())
+  const [gameSession, setGameSession] = useState({})
+  useEffect(() => {
+    reactTic = new ReactTic(setGameSession)
+    console.log('load')
+    reactTic.load()
+  }, [])
+  console.log('getting game session')
 
   const handleReset = () => {
-    resetGame()
+    reactTic.resetGame()
   }
   const handleSetPlayer1 = (event) => {
-    setPlayer1(event.target.value)
+    reactTic.setPlayer1(event.target.value)
   }
   const handleSetPlayer2 = (event) => {
-    setPlayer2(event.target.value)
+    reactTic.setPlayer2(event.target.value)
   }
 
   const bgRed = {
     backgroundColor: 'red'
   }
-  console.log('gameSession.isStarted', getGameSession(), gameSession)
+  console.log('gameSession.isStarted', gameSession)
   return (
     <div>
       <PlayerSelects handleSetPlayer1={handleSetPlayer1} handleSetPlayer2={handleSetPlayer2}></PlayerSelects>
@@ -32,7 +37,7 @@ export function Tictactoe() {
       <br /><br />
 
       {/*the board*/}
-      <div id="board" className={gameSession.startedAt ? "": "displayNone"}>
+      <div id="board" className={gameSession.startedAt ? "" : "displayNone"}>
         <div>
           current player:<span id="current-player">?</span>
         </div>

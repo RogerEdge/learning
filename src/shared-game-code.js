@@ -1,16 +1,16 @@
-import { getUserSession, pushUserSession } from "./components"
-import { saveGameSession, updateDisplay } from "./tic-game"
+import { getUserSession, pushUserSession, saveSession } from "./components"
 
 let gameOver = false
 
-export function getGameSession() {
+export function getGameSession(displayControl) {
   const session = getSession()
 
   if (session.isAdmin) {
     const userSession = getUserSession()
     if (!userSession.tictactoe) {
       console.info('reset game session by get game session admin')
-      userSession.tictactoe = resetGameSession(session)
+      console.log('99999displayControl', displayControl)
+      userSession.tictactoe = resetGameSession(session,displayControl)
       pushUserSession(userSession)
     }
     return userSession.tictactoe
@@ -19,7 +19,8 @@ export function getGameSession() {
   if (!session.tictactoe) {
     console.info('reset game session by get game session user')
   }
-  session.tictactoe = session.tictactoe || resetGameSession(session)
+  console.log('8888displayControl', displayControl)
+  session.tictactoe = session.tictactoe || resetGameSession(session, displayControl)
   return session.tictactoe
 }
 
@@ -135,9 +136,9 @@ const imgUrl = 'https://i.pinimg.com/originals/cf/50/6d/cf506d6998d68de01e9171f3
 const img = new Image();
 img.src = imgUrl;
 
-export function resetGameSession(session) {
+export function resetGameSession(session,displayControl) {
   console.info('game session resetting')
-  const gameSession = {} //getGameSession()
+  const gameSession = {} 
 
   gameSession.player1 = ''
   gameSession.player2 = ''
@@ -150,8 +151,9 @@ export function resetGameSession(session) {
   gameSession.board = ["", "", "", "", "", "", "", "", ""];
   gameSession.currentPlayer = getPlayer1Emoji()
   setCurrentPlayer(getPlayer1Emoji())
-  saveGameSession(session, gameSession)
-  updateDisplay(session, gameSession)
+  saveGameSession(session, gameSession,'tictactoe')
+  console.log('displayControl', displayControl)
+  displayControl.updateDisplay(session, gameSession)
   console.info('game session reset')
 
   return gameSession
@@ -159,9 +161,9 @@ export function resetGameSession(session) {
 }
 
 // make sure session already started
-export function paramSession() {
+export function paramSession(displayControl) {
   const session = getSession()
-  const gameSession = getGameSession()
+  const gameSession = getGameSession(displayControl)
   return { session: session, gameSession: gameSession }
 }
 
@@ -176,4 +178,23 @@ export function getSession() {
 		localStorage.session = '{}'
 		return JSON.parse(localStorage.session)
 	}
+}
+
+export function saveGameSession(session, gameSession,gameName) {
+
+  if (session.isAdmin) {
+    session.userSession.lastUpdatedAt = Date.now()
+    session.userSession.tictactoe = session.userSession[gameName]
+    pushUserSession(session.userSession)
+    saveSession(session)
+    return
+  }
+
+  session[gameName] = session[gameName] || {}
+  session[gameName] = gameSession
+  session.lastUpdatedAt = Date.now()
+
+  //update localstorage
+  pushUserSession(session)
+  saveSession(session)
 }
