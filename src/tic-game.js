@@ -71,6 +71,8 @@ export class ReactTic {
       //selectPlayer2.removeAttribute('disabled')
       //selectPlayer2.value = ''
     }
+
+    this.setGameSession({...gameSession})
   
     if (gameSession.startedAt) {
       const boardShown = isBoardShown()
@@ -101,14 +103,14 @@ export class ReactTic {
   }
 
   setPlayer1(emoji) {
-    const { session, gameSession } = paramSession()
+    const { session, gameSession } = paramSession(this)
     setPlayer1Emoji(gameSession.player1Emoji = emoji)
     this.checkForStart(session, gameSession)
     this.updateDisplay(session, gameSession)
   }
   
   setPlayer2(emoji) {
-    const { session, gameSession } = paramSession() // ensure we have game memory
+    const { session, gameSession } = paramSession(this) // ensure we have game memory
     setPlayer2Emoji(gameSession.player2Emoji = emoji)
     this.checkForStart(session, gameSession)
     this.updateDisplay(session, gameSession)
@@ -215,28 +217,7 @@ export class ReactTic {
     
     //add board click event listeners
     for (var i = 0; i < gameSession.board.length; i++) {
-      document.getElementById(i).addEventListener("click", function () {
-        const currentPlayer = getCurrentPlayer()
-        //get freshest memory at click event
-        const session = getSession()
-        console.log('this1111133', this)
-        const gameSession = getGameSession(this)
-        const myTurn = this.isPlayersTurn()
-  
-        if (!myTurn) {
-          console.warn('its not your turn', {
-            currentPlayer: currentPlayer,
-            you: session.isAdmin ? 'admin' : 'user',
-            gameSession: gameSession
-          })
-          return
-        }
-        const id = this.getAttribute('id')
-        onClick(id, gameSession.board, gameSession, ()=>this.checkForWinner());
-  
-        gameSession.currentPlayer = currentPlayer
-        saveGameSession(session, gameSession, 'tictactoe')
-      })
+      document.getElementById(i).addEventListener("click", this.getElementClick(i))
     }
   
     gameSession.currentPlayer = gameSession.currentPlayer || getPlayer1Emoji()
@@ -244,6 +225,31 @@ export class ReactTic {
   
     saveGameSession(session, gameSession, 'tictactoe')
     console.info('event listeners added')
+  }
+
+  getElementClick(id){
+    return ()=> {
+      const currentPlayer = getCurrentPlayer()
+      //get freshest memory at click event
+      const session = getSession()
+      console.log('this1111133', this)
+      const gameSession = getGameSession(this)
+      const myTurn = this.isPlayersTurn()
+
+      if (!myTurn) {
+        console.warn('its not your turn', {
+          currentPlayer: currentPlayer,
+          you: session.isAdmin ? 'admin' : 'user',
+          gameSession: gameSession
+        })
+        return
+      }
+
+      onClick(id, gameSession.board, gameSession, (gameSession)=>this.checkForWinner(gameSession));
+
+      gameSession.currentPlayer = currentPlayer
+      saveGameSession(session, gameSession, 'tictactoe')
+    }
   }
 
   checkForWinner(gameSession) {

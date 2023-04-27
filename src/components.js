@@ -14,6 +14,7 @@ const html = `
 		<h1>Roger Edge III - Aspiring Programmer</h1>
 	</header>
   <div class='menu'>
+  <nav>
   <small><a href="mailto:lilroger316@gmail.com">lilroger316@gmail.com</a></small>
   ·
   <a href="**basePath**home">Home</a>
@@ -26,14 +27,53 @@ const html = `
   <span id='follow-user-display' style='display:none'>
   ·
   <a id='follow-user-link'>Follow User</a>
+  </nav>
   </span>
   </div>
 	<style>
   .menu {
-    background-color:#e0e111;padding: 0.5rem;
+    background-color:#fff;padding: 0.5rem;text-align:center;
   }
+
+ /* button {
+	background-color: #4f8cb5;
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 20px;
+	margin-top: 50px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.button-animate {
+	transform: scale(1.2);
+	box-shadow: 0px 0px 10px #000;
+}*/
+
+  nav {
+	background-color: #2f3a4f;
+	padding: 10px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+nav a {
+	color: #fff;
+	text-decoration: none;
+	padding: 10px;
+	border-radius: 20px;
+	transition: all 0.3s ease-in-out;
+}
+nav a:hover {
+	background-color: #4f8cb5;
+}
+nav a.active {
+	background-color: #4f8cb5;
+}
+
 	header {
-		background-color: #333;
+		background-color: #2f3a4f;
 		color: #fff;
 		padding: 20px;
 		text-align: center;
@@ -51,6 +91,8 @@ class HelloWorld extends HTMLElement {
 		//shadow.activeElement.getAttribute('')
 		shadow.innerHTML = htmlReplaced
 	}
+
+
 }
 customElements.define('main-header', HelloWorld);
 

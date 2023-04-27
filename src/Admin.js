@@ -18,7 +18,7 @@ export function Admin() {
     <div>
       <form onSubmit={handleSubmit} >
         <input name="code" id="adminCode" />
-        <button type="submit">Send</button>
+        <button onmouseover="animateButton()" onmouseout="resetButton()"type="submit">Send</button>
       </form>
       <br />
       <div id="share-state" style={styles}>
