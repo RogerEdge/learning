@@ -57,7 +57,7 @@ export function Home() {
 			</div>
 			<br />
 			<h2>Contact Me</h2>
-			<p>If you would like to get in touch with me regarding job opportunities or collaboration on projects, please feel free to email me at <a href="mailto:lilroger316@gmail.com">lilroger316@gmail.com</a>.</p>
+			<p>If you would like to get in touch with me regarding job opportunities or collaboration on projects, please feel free to email me at <a href="mailto:me@roger-edge.com">me@roger-edge.com</a>.</p>
 		</div>
 	);
 }

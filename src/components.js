@@ -14,8 +14,8 @@ const html = `
 		<h1>Roger Edge III - Aspiring Programmer</h1>
 	</header>
   <div class='menu'>
-  <nav>
-  <small><a href="mailto:lilroger316@gmail.com">lilroger316@gmail.com</a></small>
+  <nav style='flex-wrap:wrap'>
+  <small><a href="mailto:me@roger-edge.com">me@roger-edge.com</a></small>
   ·
   <a href="**basePath**home">Home</a>
   ·
@@ -32,7 +32,7 @@ const html = `
   </div>
 	<style>
   .menu {
-    background-color:#fff;padding: 0.5rem;text-align:center;
+    padding: 0.5rem; text-align:center; border-color:white; border-width:10px; border-style:solid; border-left:0; border-right:0;
   }
 
  /* button {

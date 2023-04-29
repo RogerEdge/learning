@@ -1,6 +1,7 @@
 select {
   font-size: 24px;
   padding: 10px;
+  width: 50%;
 }
 option {
   font-size: 48px;

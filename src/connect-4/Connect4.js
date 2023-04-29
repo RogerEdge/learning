@@ -10,6 +10,8 @@ export function Connect4() {
   return (
     <div>
       <PlayerSelects></PlayerSelects>
+      <br />
+      <br />
       <table>
         <tbody>
 

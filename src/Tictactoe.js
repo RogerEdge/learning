@@ -26,9 +26,7 @@ export function Tictactoe() {
     reactTic.setPlayer2(event.target.value)
   }
 
-  const bgRed = {
-    backgroundColor: 'red'
-  }
+
   console.log('gameSession.isStarted', gameSession)
   return (
     <div>
@@ -39,11 +37,14 @@ export function Tictactoe() {
       {/*the board*/}
       <div id="board" className={gameSession.startedAt ? "" : "displayNone"}>
         <div>
+          <br />
           current player:<span id="current-player">?</span>
         </div>
 
 
         <table>
+          <br />
+          <br />
           <tbody>
             <tr>
               <td id="0"></td>
@@ -62,12 +63,18 @@ export function Tictactoe() {
             </tr>
           </tbody>
         </table>
+        <br />
+        <br />
 
-        <button onClick={handleReset} style={bgRed}>reset game</button>
-      </div>
-      <div id="winner"></div>
+        <div id="winner"></div>
+      <br />
+      <br />
+        <button onClick={handleReset} style={{ backgroundColor: 'red', fontSize: 'inherit' }}>
+          reset game
+        </button>
 
 
     </div >
+      </div>
   )
 }
