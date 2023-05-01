@@ -90,13 +90,11 @@ export function Keywords() {
   }
   
   const updateDisplay = () => {
-    console.log(22)
+    //console.log(22)
     setData(dataState.map(data => data))
   }
 
-  useEffect(() => {
-    console.log(dataState, "datastate");
-  }, [dataState]);
+  
   return (
     <div>
       <h1>Familiar Programming Technologies</h1>

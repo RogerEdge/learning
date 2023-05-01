@@ -7,6 +7,14 @@ export class ReactTic {
   }
 
   load() {
+    const session = getSession()
+    const gameSession = getGameSession()
+    console.info('loading game session', gameSession)
+    if (gameSession.startedAt){
+      console.info('existing game detected')
+      this.startGame(session,gameSession)
+    }
+    this.setGameSession(gameSession)
     let refetchCount = 0
     //every 2s new info is brought in
     setUserHook((user) => {
@@ -18,7 +26,6 @@ export class ReactTic {
 
       ++refetchCount
       const session = getSession()
-      console.log('22222getGameSession', this)
       const gameSession = getGameSession(this)
       //gameSession.lastUpdatedAt=gameSession.lastUpdatedAt || 0
 
@@ -72,8 +79,7 @@ export class ReactTic {
       //selectPlayer2.value = ''
     }
 
-    this.setGameSession({...gameSession})
-  
+    
     if (gameSession.startedAt) {
       const boardShown = isBoardShown()
       if (!boardShown) {
@@ -90,11 +96,13 @@ export class ReactTic {
     })
   
     setCurrentPlayer(gameSession.currentPlayer)
-    document.getElementById('current-player').innerHTML = gameSession.currentPlayer
+    //document.getElementById('current-player').innerHTML = gameSession.currentPlayer
+   //update react display
+   this.setGameSession({...gameSession})
   }
 
   startGame(session, gameSession) {
-    console.info('game started locally')
+    console.info('game started locally',gameSession)
     gameSession.startedAt = Date.now()
     gameSession.currentPlayer = gameSession.player1Emoji
     this.updateDisplay(session, gameSession)
@@ -105,20 +113,28 @@ export class ReactTic {
   setPlayer1(emoji) {
     const { session, gameSession } = paramSession(this)
     setPlayer1Emoji(gameSession.player1Emoji = emoji)
+    console.info('player1 set',gameSession)
     this.checkForStart(session, gameSession)
     this.updateDisplay(session, gameSession)
+    
+    const { gameSession:gameSession2 } = paramSession(this)
+    console.info('player1 set v2',gameSession2)
+    
   }
   
   setPlayer2(emoji) {
     const { session, gameSession } = paramSession(this) // ensure we have game memory
+    console.info('player2 11111',gameSession)
     setPlayer2Emoji(gameSession.player2Emoji = emoji)
+    console.info('player2 set',gameSession)
     this.checkForStart(session, gameSession)
     this.updateDisplay(session, gameSession)
   }
 
   checkForStart(session, gameSession) {
-    if (gameSession.startedAt) {
-      console.warn('game already started')
+    if (gameSession.startedAt && gameSession.currentPlayer) {
+      console.warn('game already started',gameSession)
+      saveGameSession(session, gameSession, 'tictactoe')
       return
     }
   
@@ -153,7 +169,7 @@ export class ReactTic {
       }
   
       gameSession.player1Emoji = getPlayer1Emoji()
-      saveGameSession(session, gameSession, 'tictactoe')
+      
       console.info('player1 set', getPlayer1Emoji())
     }
   
@@ -180,7 +196,7 @@ export class ReactTic {
       }
   
       gameSession.player2Emoji = getPlayer2Emoji()
-      saveGameSession(session, gameSession, 'tictactoe')
+      
       console.info('player2 set', getPlayer2Emoji())
     }
   
@@ -190,18 +206,27 @@ export class ReactTic {
     if (startReady) {
       this.startGame(session, gameSession)
     }
+    saveGameSession(session, gameSession, 'tictactoe')
   }
 
   resetGame() {
     const session = getSession()
     showBoard()
-    console.log('this', this)
     const gameSession = resetGameSession(session,this)
     return gameSession
   }
 
+  restartGame() {
+    const session = getSession()
+    console.info('restarting game',session)
+    const gameSession = this.resetGame()
+    gameSession.currentPlayer=gameSession.player1Emoji
+    this.startGame(session, gameSession)
+    console.info('game restarted',gameSession)
+  }
+
   disableBoard() {
-    console.log('this11111', this)
+    console.log('disabling board', this)
     const gameSession = getGameSession(this)
     for (var i = 0; i < gameSession.board.length; i++) {
       document.getElementById(i).removeEventListener("click", onClick);
@@ -232,7 +257,6 @@ export class ReactTic {
       const currentPlayer = getCurrentPlayer()
       //get freshest memory at click event
       const session = getSession()
-      console.log('this1111133', this)
       const gameSession = getGameSession(this)
       const myTurn = this.isPlayersTurn()
 

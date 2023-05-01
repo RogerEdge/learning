@@ -19,6 +19,10 @@ export function Tictactoe() {
   const handleReset = () => {
     reactTic.resetGame()
   }
+  const handleRestart = () => {
+    console.log('handle restart')
+    reactTic.restartGame()
+  }
   const handleSetPlayer1 = (event) => {
     reactTic.setPlayer1(event.target.value)
   }
@@ -38,13 +42,11 @@ export function Tictactoe() {
       <div id="board" className={gameSession.startedAt ? "" : "displayNone"}>
         <div>
           <br />
-          current player:<span id="current-player">?</span>
+          current player:{gameSession.currentPlayer}
         </div>
 
 
         <table>
-          <br />
-          <br />
           <tbody>
             <tr>
               <td id="0"></td>
@@ -71,6 +73,9 @@ export function Tictactoe() {
       <br />
         <button onClick={handleReset} style={{ backgroundColor: 'red', fontSize: 'inherit' }}>
           reset game
+        </button>
+<button onClick={handleRestart} style={{ backgroundColor: 'orange', fontSize: 'inherit' }}>
+          restart game
         </button>
 
 

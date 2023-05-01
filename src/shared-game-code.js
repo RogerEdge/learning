@@ -9,7 +9,6 @@ export function getGameSession(displayControl) {
     const userSession = getUserSession()
     if (!userSession.tictactoe) {
       console.info('reset game session by get game session admin')
-      console.log('99999displayControl', displayControl)
       userSession.tictactoe = resetGameSession(session,displayControl)
       pushUserSession(userSession)
     }
@@ -19,7 +18,6 @@ export function getGameSession(displayControl) {
   if (!session.tictactoe) {
     console.info('reset game session by get game session user')
   }
-  console.log('8888displayControl', displayControl)
   session.tictactoe = session.tictactoe || resetGameSession(session, displayControl)
   return session.tictactoe
 }
@@ -140,19 +138,20 @@ export function resetGameSession(session,displayControl) {
   console.info('game session resetting')
   const gameSession = {} 
 
-  gameSession.player1 = ''
+  //reset players
+  /*gameSession.player1 = ''
   gameSession.player2 = ''
   setPlayer1Emoji()
   setPlayer2Emoji()
   gameSession.player1Emoji = ''
-  gameSession.player2Emoji = ''
+  gameSession.player2Emoji = ''*/
+
   delete gameSession.startedAt//=Date.now()
   delete gameSession.winningPlayer
   gameSession.board = ["", "", "", "", "", "", "", "", ""];
   gameSession.currentPlayer = getPlayer1Emoji()
   setCurrentPlayer(getPlayer1Emoji())
   saveGameSession(session, gameSession,'tictactoe')
-  console.log('displayControl', displayControl)
   displayControl.updateDisplay(session, gameSession)
   console.info('game session reset')
 

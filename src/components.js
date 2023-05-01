@@ -1,10 +1,10 @@
-import { getSession } from "./shared-game-code"
+import { getGameSession, getSession } from "./shared-game-code"
 
 function load() {
 	const session = getSession()
 	if (session.code) {
 		startRefetch()
-		console.log('existing session restored')
+		console.info('existing session restored')
 	}
 }
 
@@ -152,6 +152,7 @@ export function saveSession(session) {
 		throw message
 	}
 	localStorage.session = JSON.stringify(session)
+	console.info('💾 session saved',session)
 }
 
 function saveNsyncCode(code) {
