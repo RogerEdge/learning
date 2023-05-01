@@ -5,7 +5,7 @@ export function Home() {
 
 	return (
 		<div>
-			<div className="centeredContent center" style={{ position: "relative", height: "14vw", "max-height": "125px" }}>
+			<div className="centeredContent center" style={{ position: "relative", height: "14vw", maxHeight: "125px" }}>
 				<div style={{ position: "absolute" }}>
 					<img src="/assets/profile_photo_low.jpg" alt="Roger img" className="img profileImage" />
 					<div>Roger Edge</div>
@@ -28,8 +28,8 @@ export function Home() {
 			<h2>Projects</h2>
 			<p>Functional code demonstrating my capabilities</p>
 			<div>
-				<div class="flex flex-wrap center">
-					<div class="flex1">
+				<div className="flex flex-wrap center">
+					<div className="flex1">
 						<a href="/learning/tictactoe">
 							<div>
 								<img src="https://static.thenounproject.com/png/4035212-200.png" width="200" alt="" border="0" />
@@ -37,7 +37,7 @@ export function Home() {
 							Play Tic Tac Toe
 						</a>
 					</div>
-					<div class="flex1">
+					<div className="flex1">
 						<a href="/learning/fib">
 							<div>
 								<img src="https://static.thenounproject.com/png/1751844-200.png" width="200" alt="" border="0" />
@@ -45,7 +45,7 @@ export function Home() {
 							fibonacci sequence code
 						</a>
 					</div>
-					<div class="flex1">
+					<div className="flex1">
 						<a href="/learning/connect-4">
 							<div>
 								<img src="https://static.thenounproject.com/png/5132387-200.png" width="200" alt="" border="0" />

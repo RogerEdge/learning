@@ -84,10 +84,16 @@ export function Keywords() {
   ]
   const [dataState, setData] = useState(data)
   const handleClick = (item) => {
-    item.show = true;
-    setData(dataState.map(data => data))
+    item.show = !item.show;
+    updateDisplay()
     console.log(item, dataState)
   }
+  
+  const updateDisplay = () => {
+    console.log(22)
+    setData(dataState.map(data => data))
+  }
+
   useEffect(() => {
     console.log(dataState, "datastate");
   }, [dataState]);
@@ -95,13 +101,14 @@ export function Keywords() {
     <div>
       <h1>Familiar Programming Technologies</h1>
       <p>This is a list of technologies that I have learned and how proficient I am with them</p>
+      <p>Tap an item below for more info</p>
       <div className="container">
         {dataState.map(item => {
           return (
-            <div key={item.label} style={{ width: item.show ? "100%" : "auto", "background-color": item.show ? "#aaa" : "" }}
-              className={item.show ? "flex flex-wrap" : "center"}
+            <div id="list-top" key={item.label} style={{ width: item.show ? "100%" : "auto", backgroundColor: item.show ? "#aaa" : "" }}
+              className={'pad gap ' + (item.show ? "flex flex-wrap" : "center")}
             >
-              <div>
+              <div className="pointer">
                 <div onClick={() => handleClick(item)}
                 >
                   <img src={item.imgSrc} alt={item.imgAlt}
@@ -109,12 +116,16 @@ export function Keywords() {
                     title={item.title} />
                 </div>
                 <span>
-                  {item.label}
                   <div>{item.rating}</div>
-                  
                 </span>
               </div>
-              {item.show && <div>{(item.codeHref && <a href={item.codeHref} className="link">Click Here{item.show} </a>) || <br />}</div>}
+              {item.show &&
+                <div className="flex1">
+                  <button style={{float:'right'}} type='button' onClick={()=>{item.show=false;updateDisplay()}}>🅧</button>
+                  <h3>{item.label}</h3>
+                  {(item.codeHref && <a href={item.codeHref} target="_blank" className="link" rel="noreferrer">Click Here for link to sample</a>) || <br />}
+                </div>
+              }
             </div>
           )
         })}

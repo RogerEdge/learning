@@ -65,3 +65,15 @@ section {
 .flex1 {
 	flex-grow: 1;
 }
+
+.pointer {
+	cursor:pointer
+}
+
+.pad {
+	padding:1em;
+}
+
+.gap {
+	gap:1em;
+}
