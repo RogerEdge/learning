@@ -9,7 +9,7 @@ export function getGameSession(displayControl) {
     const userSession = getUserSession()
     if (!userSession.tictactoe) {
       console.info('reset game session by get game session admin')
-      userSession.tictactoe = resetGameSession(session,displayControl)
+      userSession.tictactoe = resetGameSession(session, userSession.tictactoe, displayControl)
       pushUserSession(userSession)
     }
     return userSession.tictactoe
@@ -18,7 +18,7 @@ export function getGameSession(displayControl) {
   if (!session.tictactoe) {
     console.info('reset game session by get game session user')
   }
-  session.tictactoe = session.tictactoe || resetGameSession(session, displayControl)
+  session.tictactoe = session.tictactoe || resetGameSession(session, session.tictactoe, displayControl)
   return session.tictactoe
 }
 
@@ -134,9 +134,13 @@ const imgUrl = 'https://i.pinimg.com/originals/cf/50/6d/cf506d6998d68de01e9171f3
 const img = new Image();
 img.src = imgUrl;
 
-export function resetGameSession(session,displayControl) {
+export function resetGameSession(
+  session,
+  gameSession,
+  displayControl
+) {
   console.info('game session resetting')
-  const gameSession = {} 
+  // const gameSession = {} 
 
   //reset players
   /*gameSession.player1 = ''
@@ -151,9 +155,9 @@ export function resetGameSession(session,displayControl) {
   gameSession.board = ["", "", "", "", "", "", "", "", ""];
   gameSession.currentPlayer = getPlayer1Emoji()
   setCurrentPlayer(getPlayer1Emoji())
-  saveGameSession(session, gameSession,'tictactoe')
-  displayControl.updateDisplay(session, gameSession)
-  console.info('game session reset')
+  saveGameSession(session, gameSession, 'tictactoe')
+  displayControl.updateDisplay(gameSession)
+  console.info('🔄 game session reset', gameSession)
 
   return gameSession
 
@@ -180,7 +184,6 @@ export function getSession() {
 }
 
 export function saveGameSession(session, gameSession,gameName) {
-
   if (session.isAdmin) {
     session.userSession.lastUpdatedAt = Date.now()
     session.userSession.tictactoe = session.userSession[gameName]

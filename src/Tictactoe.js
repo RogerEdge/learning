@@ -2,9 +2,7 @@ import { PlayerSelects } from './PlayerSelects.js'
 import { ReactTic } from "./tic-game"
 
 import "./tic-style.css"
-import "./choose-emoji.css"
 import { useEffect, useState } from 'react'
-
 
 let reactTic;
 export function Tictactoe() {
@@ -30,21 +28,25 @@ export function Tictactoe() {
     reactTic.setPlayer2(event.target.value)
   }
 
-
-  console.log('gameSession.isStarted', gameSession)
+  console.log('react gamesession', gameSession)
   return (
     <div>
-      <PlayerSelects handleSetPlayer1={handleSetPlayer1} handleSetPlayer2={handleSetPlayer2}></PlayerSelects>
+      <PlayerSelects
+        handleSetPlayer1={handleSetPlayer1}
+        handleSetPlayer2={handleSetPlayer2}
+        onStart={() => reactTic.start()}
+        gameSession={gameSession}
+      ></PlayerSelects>
 
       <br /><br />
 
       {/*the board*/}
-      <div id="board" className={gameSession.startedAt ? "" : "displayNone"}>
+      <div className={gameSession.startedAt ? "" : "displayNone"}>
         <div>
           <br />
           current player:{gameSession.currentPlayer}
+          <br /><br />
         </div>
-
 
         <table>
           <tbody>
@@ -69,17 +71,19 @@ export function Tictactoe() {
         <br />
 
         <div id="winner"></div>
-      <br />
-      <br />
-        <button onClick={handleReset} style={{ backgroundColor: 'red', fontSize: 'inherit' }}>
-          reset game
-        </button>
-<button onClick={handleRestart} style={{ backgroundColor: 'orange', fontSize: 'inherit' }}>
-          restart game
-        </button>
+        <br />
+        <br />
+        <div className='flex flex-wrap'>
 
+          <button type="button" className="flex1" onClick={handleReset} style={{ backgroundColor: 'red', fontSize: 'inherit' }}>
+            reset game
+          </button>
+          <button type="button" className="flex1" onClick={handleRestart} style={{ backgroundColor: 'orange', fontSize: 'inherit' }}>
+            restart game
+          </button>
+        </div>
 
-    </div >
-      </div>
+      </div >
+    </div>
   )
 }

@@ -6,14 +6,28 @@ export class ReactTic {
     this.setGameSession = setGameSession
   }
 
+  isGameSessionStarted(gameSession) {
+    return gameSession.startedAt && gameSession.currentPlayer && gameSession.player1Emoji && gameSession.player2Emoji
+  }
+
   load() {
     const session = getSession()
     const gameSession = getGameSession()
     console.info('loading game session', gameSession)
+    
+    setPlayer1Emoji(gameSession.player1Emoji)
+    setPlayer2Emoji(gameSession.player2Emoji)
+
     if (gameSession.startedAt){
-      console.info('existing game detected')
-      this.startGame(session,gameSession)
+      const valid = this.isGameSessionStarted(gameSession)
+      console.info('existing game detected', {valid})
+      if ( valid ) {
+        this.startGame(session,gameSession)
+      } else {
+        this.resetGame()
+      }
     }
+
     this.setGameSession(gameSession)
     let refetchCount = 0
     //every 2s new info is brought in
@@ -21,7 +35,7 @@ export class ReactTic {
       //console.log('refetchCount', refetchCount,user)
       if (!refetchCount) {
         console.info('first hook')
-        this.updateDisplay(user, user.tictactoe)
+        this.updateDisplay(user.tictactoe)
       }
 
       ++refetchCount
@@ -48,49 +62,15 @@ export class ReactTic {
     })
   }
 
-  updateDisplay(session, gameSession) {
-    if (gameSession.player1) {
+  updateDisplay(gameSession) {
+    /*if (gameSession.player1) {
       setPlayer1Emoji(gameSession.player1Emoji)
     }
-  
-    const selectPlayer1 = document.getElementById('select-player-1')
-    if (getPlayer1Emoji() && gameSession.player1Emoji) {
-      selectPlayer1.value = getPlayer1Emoji()
-      selectPlayer1.setAttribute('disabled', true)
-      this.checkForStart(session, gameSession)
-    } else {
-      //TODO:will need to restore disabling player select
-      //selectPlayer1.removeAttribute('disabled')
-      //selectPlayer1.value = '' 
-    }
-  
+    
     if (gameSession.player2) {
       setPlayer2Emoji(gameSession.player2Emoji)
-    }
-  
-    const selectPlayer2 = document.getElementById('select-player-2')
-    if (getPlayer2Emoji() && gameSession.player2Emoji) {
-      selectPlayer2.value = getPlayer2Emoji()
-      selectPlayer2.setAttribute('disabled', true)
-      this.checkForStart(session, gameSession)
-    } else {
-      //TODO:will need to restore disabling player select
-      //selectPlayer2.removeAttribute('disabled')
-      //selectPlayer2.value = ''
-    }
+    }*/
 
-    
-    if (gameSession.startedAt) {
-      const boardShown = isBoardShown()
-      if (!boardShown) {
-        console.info('board opened by refetch')
-        showBoard()
-        this.addListeners(session, gameSession)
-      }
-    } else {
-      //hideBoard()
-    }
-  
     gameSession.board.forEach((space, i) => {
       markBoardSpace(i, space)
     })
@@ -101,11 +81,17 @@ export class ReactTic {
    this.setGameSession({...gameSession})
   }
 
+  start() {
+    const session = getSession()
+    const gameSession = getGameSession()
+    this.startGame(session, gameSession)
+  }
+
   startGame(session, gameSession) {
     console.info('game started locally',gameSession)
     gameSession.startedAt = Date.now()
     gameSession.currentPlayer = gameSession.player1Emoji
-    this.updateDisplay(session, gameSession)
+    this.updateDisplay(gameSession)
     saveGameSession(session, gameSession, 'tictactoe')
     this.addListeners(session, gameSession)
   }
@@ -115,7 +101,7 @@ export class ReactTic {
     setPlayer1Emoji(gameSession.player1Emoji = emoji)
     console.info('player1 set',gameSession)
     this.checkForStart(session, gameSession)
-    this.updateDisplay(session, gameSession)
+    this.updateDisplay(gameSession)
     
     const { gameSession:gameSession2 } = paramSession(this)
     console.info('player1 set v2',gameSession2)
@@ -124,11 +110,10 @@ export class ReactTic {
   
   setPlayer2(emoji) {
     const { session, gameSession } = paramSession(this) // ensure we have game memory
-    console.info('player2 11111',gameSession)
     setPlayer2Emoji(gameSession.player2Emoji = emoji)
     console.info('player2 set',gameSession)
     this.checkForStart(session, gameSession)
-    this.updateDisplay(session, gameSession)
+    this.updateDisplay(gameSession)
   }
 
   checkForStart(session, gameSession) {
@@ -141,15 +126,16 @@ export class ReactTic {
     // Assume userType is user if its not defined. Allows a user to play by themselves
     session.userType = session.userType || 'user'
   
-    if (getPlayer1Emoji()) {
-      console.log('🔴player1Emoji', getPlayer1Emoji())
+    const p1Emoji = getPlayer1Emoji()
+    if (p1Emoji) {
+      console.log('🔴player1Emoji', p1Emoji)
     }
-    const changePlayer1 = getPlayer1Emoji() && getPlayer1Emoji() !== gameSession.player1Emoji
-    console.log('changePlayer1', changePlayer1, getPlayer1Emoji(), gameSession.player1Emoji)
+    const changePlayer1 = p1Emoji && p1Emoji !== gameSession.player1Emoji
+    console.log('changePlayer1', changePlayer1, p1Emoji, gameSession.player1Emoji)
     if (changePlayer1) {
       if (gameSession.player1 && gameSession.player1 !== session.userType) {
         console.warn('🟠 player 1 does not match userType', {
-          player1Emoji: getPlayer1Emoji(),
+          player1Emoji: p1Emoji,
           gameSession: {
             player1Emoji: gameSession.player1Emoji,
             player1: gameSession.player1,
@@ -168,16 +154,17 @@ export class ReactTic {
         gameSession.player2 = 'user'
       }
   
-      gameSession.player1Emoji = getPlayer1Emoji()
+      gameSession.player1Emoji = p1Emoji
       
-      console.info('player1 set', getPlayer1Emoji())
+      console.info('player1 set', p1Emoji)
     }
   
-    const changePlayer2 = getPlayer2Emoji() && getPlayer2Emoji() !== gameSession.player2Emoji
+    const p2Emoji = getPlayer2Emoji()
+    const changePlayer2 = p2Emoji && p2Emoji !== gameSession.player2Emoji
     if (changePlayer2) {
       if (gameSession.player2 && gameSession.player2 !== session.userType) {
         console.warn('🟠 player 2 does not match userType', {
-          player2Emoji: getPlayer2Emoji(),
+          player2Emoji: p2Emoji,
           gameSession: {
             player2Emoji: gameSession.player2Emoji,
             player2: gameSession.player2,
@@ -195,32 +182,33 @@ export class ReactTic {
         gameSession.player1 = 'user'
       }
   
-      gameSession.player2Emoji = getPlayer2Emoji()
+      gameSession.player2Emoji = p2Emoji
       
-      console.info('player2 set', getPlayer2Emoji())
+      console.info('player2 set', p2Emoji)
     }
   
-    const startReady = getPlayer1Emoji() && getPlayer2Emoji() &&
+    const startReady = p1Emoji && p2Emoji &&
       gameSession.player1Emoji && gameSession.player2Emoji
-    console.log('startReady', startReady)
-    if (startReady) {
+    console.log('startReady?', startReady)
+    /*if (startReady) {
       this.startGame(session, gameSession)
-    }
+    }*/
     saveGameSession(session, gameSession, 'tictactoe')
   }
 
   resetGame() {
     const session = getSession()
-    showBoard()
-    const gameSession = resetGameSession(session,this)
+    const gameSession = resetGameSession(session, session.tictactoe, this)
     return gameSession
   }
 
   restartGame() {
     const session = getSession()
-    console.info('restarting game',session)
+    // const gameSession = getGameSession()
+    console.info('restarting game',session.tictactoe)
     const gameSession = this.resetGame()
     gameSession.currentPlayer=gameSession.player1Emoji
+    console.info('start game...',gameSession)
     this.startGame(session, gameSession)
     console.info('game restarted',gameSession)
   }
@@ -333,20 +321,4 @@ export class ReactTic {
   
     return false
   }
-}
-
-
-/*function hideBoard() {
-  const boardElement = document.getElementById('board');
-  boardElement.style.display = 'none';
-}*/
-
-function showBoard() {
-  const boardElement = document.getElementById('board');
-  boardElement.style.display = 'block';
-  boardElement.classList.remove('displayNone')
-}
-
-function isBoardShown() {
-  return document.getElementById('board').style.display !== 'none'
 }

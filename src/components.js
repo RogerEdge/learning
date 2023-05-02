@@ -1,4 +1,4 @@
-import { getGameSession, getSession } from "./shared-game-code"
+import { getSession } from "./shared-game-code"
 
 function load() {
 	const session = getSession()
