@@ -63,7 +63,8 @@ export function Keywords() {
     title: "Full Stack - A web development term referring to both front-end (client-side) and back-end (server-side) portions of an application",
     label: "Full Stack",
     rating: "⭐️ ⭐️ ⭐️",
-    codeHref: ""
+    codeHref: "",
+    description:"/////"
   },
   {
     imgSrc: "https://img.icons8.com/emoji/2x/brain-emoji.png",
@@ -71,7 +72,8 @@ export function Keywords() {
     title: "Back end programming - The server-side programming of a web application, dealing with databases, servers, applications, and APIs",
     label: "Back end programming",
     rating: "⭐️ ⭐️ ⭐️",
-    codeHref: ""
+    codeHref: "",
+    description:">>>>>"
   },
   {
     imgSrc: "https://img.icons8.com/external-filled-outline-02-chattapat-/2x/external-artist-lifestyle-filled-outline-02-chattapat-.png",
@@ -79,7 +81,8 @@ export function Keywords() {
     title: "Front end coding - The client-side programming of a web application, dealing with design, layout, and user interaction",
     label: "Front end coding",
     rating: "⭐️ ⭐️ ⭐️ ⭐️",
-    codeHref: ""
+    codeHref: "",
+    description:"+++++"
   },
   ]
   const [dataState, setData] = useState(data)
@@ -88,13 +91,13 @@ export function Keywords() {
     updateDisplay()
     console.log(item, dataState)
   }
-  
+
   const updateDisplay = () => {
     //console.log(22)
     setData(dataState.map(data => data))
   }
 
-  
+
   return (
     <div>
       <h1>Familiar Programming Technologies</h1>
@@ -118,16 +121,28 @@ export function Keywords() {
                 </span>
               </div>
               {item.show &&
-                <div className="flex1">
-                  <button style={{float:'right'}} type='button' onClick={()=>{item.show=false;updateDisplay()}}>🅧</button>
+                <div className="flex1 code-ref">
+                  <button style={{ float: 'right' }} type='button' onClick={() => { item.show = false; updateDisplay() }}>🅧</button>
                   <h3>{item.label}</h3>
-                  {(item.codeHref && <a href={item.codeHref} target="_blank" className="link" rel="noreferrer">Click Here for link to sample</a>) || <br />}
+                  <p>{item.description}</p>
+                  {(item.codeHref &&
+                    <div className='vertical-center'>
+                      <img src="https://img.icons8.com/fluency/2x/github.png" alt="GitHub Logo" class="logo" title="GitHub - a web-based platform for version control and collaborative software development that allows users to store and manage their code repositories, as well as to contribute to other projects and collaborate with other developers." />
+                      <a href={item.codeHref} target="_blank" className="link" rel="noreferrer" >Examples of my code</a>
+                    </div>
+                  ) || <br />}
                 </div>
               }
             </div>
           )
         })}
       </div>
+      <div className='description'>
+        <p className='centered-text'>
+          I am proficient in various programming technologies, such as API development, GitHub, React, TypeScript, JavaScript, Node.js, and MongoDB. Moreover, I constantly strive to improve my abilities in these areas to ensure the best possible outcomes for my work. I have a growth mindset and a proactive approach to expanding my knowledge and skills, which enables me to maintain a strong foundation in multiple programming areas.
+        </p>
+      </div>
     </div>
+
   )
 }

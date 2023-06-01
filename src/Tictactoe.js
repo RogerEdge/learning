@@ -4,37 +4,38 @@ import { ReactTic } from "./tic-game"
 import "./tic-style.css"
 import { useEffect, useState } from 'react'
 
-let reactTic;
+let boardGame;
 export function Tictactoe() {
   const [gameSession, setGameSession] = useState({})
   useEffect(() => {
-    reactTic = new ReactTic(setGameSession)
+    boardGame = new ReactTic(setGameSession)
     console.log('load')
-    reactTic.load()
+    boardGame.load()
   }, [])
   console.log('getting game session')
 
   const handleReset = () => {
-    reactTic.resetGame()
+    boardGame.resetGame()
   }
   const handleRestart = () => {
     console.log('handle restart')
-    reactTic.restartGame()
+    boardGame.restartGame()
   }
   const handleSetPlayer1 = (event) => {
-    reactTic.setPlayer1(event.target.value)
+    boardGame.setPlayer1(event.target.value)
   }
   const handleSetPlayer2 = (event) => {
-    reactTic.setPlayer2(event.target.value)
+    boardGame.setPlayer2(event.target.value)
   }
 
   console.log('react gamesession', gameSession)
   return (
     <div>
+      <h1 className="title">Tic-Tac-Toe</h1>
       <PlayerSelects
         handleSetPlayer1={handleSetPlayer1}
         handleSetPlayer2={handleSetPlayer2}
-        onStart={() => reactTic.start()}
+        onStart={() => boardGame.start()}
         gameSession={gameSession}
       ></PlayerSelects>
 
@@ -51,19 +52,19 @@ export function Tictactoe() {
         <table>
           <tbody>
             <tr>
-              <td id="0"></td>
-              <td id="1"></td>
-              <td id="2"></td>
+              <td class="horizontal-line" id="0"></td>
+              <td class="vertical-line horizontal-line" id="1"></td>
+              <td class="vertical-line horizontal-line" id="2"></td>
             </tr>
             <tr>
-              <td id="3"></td>
-              <td id="4"></td>
-              <td id="5"></td>
+              <td class="horizontal-line" id="3"></td>
+              <td class="vertical-line horizontal-line" id="4" ></td>
+              <td class="vertical-line horizontal-line" id="5"></td>
             </tr>
             <tr>
               <td id="6"></td>
-              <td id="7"></td>
-              <td id="8"></td>
+              <td class="vertical-line" id="7"></td>
+              <td class="vertical-line" id="8"></td>
             </tr>
           </tbody>
         </table>

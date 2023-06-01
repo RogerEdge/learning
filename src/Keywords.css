@@ -98,3 +98,31 @@ a span {
 a:hover span {
   display: block;
 }
+
+.container {
+  /* styles for container */
+}
+
+.description {
+  margin-top: 20px;
+  text-align: justify;
+  border-top: 1px solid black;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.description .centered-text {
+  line-height: 2em;
+  max-width: 500px;
+}
+
+.code-ref .logo {
+  width: 30px;
+  height: 30px;
+}
+
+.vertical-center {
+  display: flex;
+  align-items: center;
+}

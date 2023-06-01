@@ -4,6 +4,7 @@ export function PlayerSelects(props) {
     "🔴", "⚫️"
   ]
   return (
+    
     <div className="flex flex-wrap">
       <select onChange={props.handleSetPlayer1} value={props.gameSession.player1Emoji}
         disabled={props.gameSession.startedAt}

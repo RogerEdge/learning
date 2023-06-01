@@ -23,7 +23,6 @@ const html = `
   ·
   <a href="**basePath**Mentorship">Mentorship</a>
   ·
-  <a href="**basePath**nsync">NSYNC</a>
   <span id='follow-user-display' style='display:none'>
   ·
   <a id='follow-user-link'>Follow User</a>

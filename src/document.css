@@ -81,3 +81,12 @@ section {
 .gap {
 	gap:1em;
 }
+
+.title {
+	font-size: 36px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 40px;
+  }
+  

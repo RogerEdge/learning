@@ -2,24 +2,26 @@ import { getUserSession, pushUserSession, saveSession } from "./components"
 
 let gameOver = false
 
-export function getGameSession(displayControl) {
+export function getGameSession(
+  GameBoard
+) {
   const session = getSession()
 
   if (session.isAdmin) {
     const userSession = getUserSession()
-    if (!userSession.tictactoe) {
-      console.info('reset game session by get game session admin')
-      userSession.tictactoe = resetGameSession(session, userSession.tictactoe, displayControl)
+    if (!userSession[GameBoard.gameName]) {
+      console.info('reset game session by get game session admin', GameBoard.gameName)
+      userSession[GameBoard.gameName] = resetGameSession(session, userSession[GameBoard.gameName], GameBoard)
       pushUserSession(userSession)
     }
-    return userSession.tictactoe
+    return userSession[GameBoard.gameName]
   }
 
-  if (!session.tictactoe) {
-    console.info('reset game session by get game session user')
+  if (!session[GameBoard.gameName]) {
+    console.info('reset game session by get game session user', GameBoard.gameName)
   }
-  session.tictactoe = session.tictactoe || resetGameSession(session, session.tictactoe, displayControl)
-  return session.tictactoe
+  session[GameBoard.gameName] = session[GameBoard.gameName] || resetGameSession(session, session[GameBoard.gameName], GameBoard)
+  return session[GameBoard.gameName]
 }
 
 export let player1Emoji = '⚫️'
@@ -72,17 +74,28 @@ export function markBoardSpace(space, currentPlayer) {
 }
 
 export function onClick(
-  id, boardMemory, gameSession, checkForWinner
+  boardClass,
+  id,
+  gameSession,
+  checkForWinner,
 ) {
+  const {gameName}=boardClass
+  const session=boardClass.getSession()
+  //const gameSession=boardClass.getGameSession()
+  const boardMemory=gameSession.board
   //If the game is over, prevent anymore code from running
   if (gameOver) {
     return
   }
+  
+  id=boardClass.getDropPosition(id)
+  console.log('id', id)
 
   if (!boardMemory[id]) {
+    console.log('xxx',{boardMemory, id, session, gameSession, gameName})
     //mark the memory space with the current player
-    boardMemory[id] = currentPlayer;
-
+    setBoardSpace(boardMemory, id, session, gameSession, gameName)
+    
     // claim the space with the current players emoji and play sound
     claimBoardSpace(id, currentPlayer)
 
@@ -105,6 +118,12 @@ export function onClick(
 }
 // Create a new Audio object and set the source to your audio file
 const winAudio = new Audio("https://cdn.pixabay.com/audio/2021/08/09/audio_ff81343224.mp3");
+export function setBoardSpace(boardMemory, id, session, gameSession, gameName) {
+  boardMemory[id] = currentPlayer
+
+  saveGameSession(session, gameSession, gameName)
+}
+
 function playWinSound() {
 
   // Play the audio
@@ -139,7 +158,8 @@ export function resetGameSession(
   gameSession,
   displayControl
 ) {
-  console.info('game session resetting')
+  gameSession = gameSession || {}
+  console.info('game session resetting', displayControl.gameName, gameSession)
   // const gameSession = {} 
 
   //reset players
@@ -152,10 +172,10 @@ export function resetGameSession(
 
   delete gameSession.startedAt//=Date.now()
   delete gameSession.winningPlayer
-  gameSession.board = ["", "", "", "", "", "", "", "", ""];
+  gameSession.board = displayControl.blankBoard
   gameSession.currentPlayer = getPlayer1Emoji()
   setCurrentPlayer(getPlayer1Emoji())
-  saveGameSession(session, gameSession, 'tictactoe')
+  saveGameSession(session, gameSession, displayControl.gameName)
   displayControl.updateDisplay(gameSession)
   console.info('🔄 game session reset', gameSession)
 
@@ -171,22 +191,22 @@ export function paramSession(displayControl) {
 }
 
 export function getSession() {
-	localStorage.session = localStorage.session || '{}'
-	try {
-		const session = JSON.parse(localStorage.session)
-		// console.log('session', session)
-		return session
-	} catch (error) {
-		console.warn('🟠 the session was lost and reset')
-		localStorage.session = '{}'
-		return JSON.parse(localStorage.session)
-	}
+  localStorage.session = localStorage.session || '{}'
+  try {
+    const session = JSON.parse(localStorage.session)
+    // console.log('session', session)
+    return session
+  } catch (error) {
+    console.warn('🟠 the session was lost and reset')
+    localStorage.session = '{}'
+    return JSON.parse(localStorage.session)
+  }
 }
 
-export function saveGameSession(session, gameSession,gameName) {
+export function saveGameSession(session, gameSession, gameName) {
   if (session.isAdmin) {
     session.userSession.lastUpdatedAt = Date.now()
-    session.userSession.tictactoe = session.userSession[gameName]
+    //session.userSession[gameName] = session.userSession[gameName]
     pushUserSession(session.userSession)
     saveSession(session)
     return
