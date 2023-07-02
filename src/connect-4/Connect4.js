@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import "./Connect4.css"
 import { PlayerSelects } from "../PlayerSelects"
 import { ReactBoard } from "../ReactBoard.class"
-import { getGameSession, getPlayer1Emoji, getPlayer2Emoji } from "../shared-game-code"
+import { getPlayer1Emoji, getPlayer2Emoji } from "../shared-game-code"
 
 export class Connect4Board extends ReactBoard {
   gameName = 'connect4'
@@ -26,6 +26,11 @@ export class Connect4Board extends ReactBoard {
 
   checkForWinner(gameSession){
     const result=checkForWinner(this)
+    /*if (gameSession.board[combo[0]] !== "" && gameSession.board[combo[0]] === gameSession.board[combo[1]] && gameSession.board[combo[1]] === gameSession.board[combo[2]]) {
+      document.getElementById("winner").innerHTML = "Winner: " + gameSession.board[combo[0]];
+      this.disableBoard();
+      return true;
+    }*/
     return result
   }
 
@@ -93,10 +98,6 @@ export function Connect4() {
   const handleReset = () => {
     boardGame.resetGame()
   }
-  const handleRestart = () => {
-    console.log('handle restart')
-    boardGame.restartGame()
-  }
 
   useEffect(() => {
     console.log('load maybe')
@@ -119,6 +120,9 @@ export function Connect4() {
         onStart={() => boardGame.start()}
         gameSession={gameSession}
       ></PlayerSelects>
+      <br />
+      <br />
+      current player:{gameSession.currentPlayer}
       <br />
       <br />
       <table>
@@ -180,14 +184,17 @@ export function Connect4() {
           </tr>
         </tbody>
       </table>
+      <br />
+      <br />
+      <div id="winner"></div>
+      <br />
+      <br />
       <div className='flex flex-wrap'>
-
+      <br />
         <button type="button" className="flex1" onClick={handleReset} style={{ backgroundColor: 'red', fontSize: 'inherit' }}>
           reset game
         </button>
-        <button type="button" className="flex1" onClick={handleRestart} style={{ backgroundColor: 'orange', fontSize: 'inherit' }}>
-          restart game
-        </button>
+
       </div>
     </div>
   )

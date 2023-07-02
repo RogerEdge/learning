@@ -82,8 +82,20 @@ const cities = [
 ];
 
 //get list of city names
+
+const cityNames = cities.map(cities => cities.name)
+console.log('cityNames', cityNames)
+
 //get list of city population by names
-//get average yearly rainfall of all cities in texas
+
+const cityPopByName = cities.map((cities) => ({name:cities.name,population:cities.population}))
+console.log('cityPopByName', cityPopByName)
+
+
+//get average yearly rainfall of all cities that are capitols
+
+const avgRainfallPerCapitol = ('isCapitol',cities.filter(cities =>cities.isCapital==='true'))
+
 //get list of cities with county name
 //get list of cities that are capitols vs. not
 //get the average population of all cities

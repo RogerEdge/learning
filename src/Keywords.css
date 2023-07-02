@@ -65,6 +65,9 @@
 .container>div:nth-child(10) {
   animation-delay: 1s;
 }
+.container>div:nth-child(11) {
+  animation-delay: 1.1s;
+}
 
 @keyframes container-item {
   from {
@@ -126,3 +129,4 @@ a:hover span {
   display: flex;
   align-items: center;
 }
+  

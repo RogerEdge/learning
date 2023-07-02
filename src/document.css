@@ -13,7 +13,8 @@ h1 {
 
 section {
 	max-width: 800px;
-	margin: 0 auto;
+	width: 100%;
+	margin: auto;
 	padding: 20px;
 	background-color: #fff;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -67,19 +68,41 @@ section {
 }
 
 .pointer {
-	cursor:pointer
+	cursor: pointer;
+	/*display: flex;*/
+	justify-content: center;
+	align-items: center;
+	/*border: 2px solid black;*/
+	padding: 20px;
+	border: 4px solid transparent;
+	background-clip: padding-box;
+	background-image: linear-gradient(to right, #6bbade, #2f3a4f);
+	outline: 3px solid #000;
 }
 
 .pad {
-	padding:1em;
+	padding: 1em;
 }
 
 .pad-sm {
-	padding:.5em;
+	padding: .5em;
+	flex: 1;
+	margin-right: 10px;
+	width: 100%;
+	font-size: 28px;
+	
 }
 
+.start-button {
+	flex: 1;
+	display: flex;
+	align-items: flex-end;
+	margin-top: 10px;
+	
+  }  
+
 .gap {
-	gap:1em;
+	gap: 1em;
 }
 
 .title {
@@ -88,5 +111,25 @@ section {
 	text-align: center;
 	margin-top: 20px;
 	margin-bottom: 40px;
-  }
-  
+}
+
+.menu {
+	display: flex;
+}
+
+.container {
+	/*overflow-x: auto;*/
+	/*white-space: nowrap;*/
+}
+
+.hide-scrollbar {
+	/*overflow: hidden !important;*/
+}
+
+.screen-width {
+	display: grid;
+	grid-template-columns: 1fr;
+	max-width: 97%;
+	box-sizing: border-box;
+	word-wrap: break-word;
+}

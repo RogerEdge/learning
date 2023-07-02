@@ -1,14 +1,17 @@
+import { Projects } from "./Projects";
+import './document.css';
+import { Link } from 'react-router-dom';
+
 export function Home() {
 	const handleClick = () => {
 		window.location = 'admin'
 	}
 
 	return (
-		<div>
+		<div className="screen-width">
 			<div className="centeredContent center" style={{ position: "relative", height: "14vw", maxHeight: "125px" }}>
 				<div style={{ position: "absolute" }}>
 					<img src="/assets/profile_photo_low.jpg" alt="Roger img" className="img profileImage" />
-					<div>Roger Edge</div>
 				</div>
 			</div>
 			<div>
@@ -23,41 +26,20 @@ export function Home() {
 				<li>Experience with Git and GitHub</li>
 				<li>Strong problem-solving skills</li>
 				<li>Excellent attention to detail</li>
+				<li>
+				<Link to="/learning/keywords">Click here to read more</Link>
+				</li>
 			</ul>
 			<br />
-			<h2>Projects</h2>
-			<p>Functional code demonstrating my capabilities</p>
-			<div>
-				<div className="flex flex-wrap center">
-					<div className="flex1">
-						<a href="/learning/tictactoe">
-							<div>
-								<img src="https://static.thenounproject.com/png/4035212-200.png" width="200" alt="" border="0" />
-							</div>
-							Play Tic Tac Toe
-						</a>
-					</div>
-					<div className="flex1">
-						<a href="/learning/fib">
-							<div>
-								<img src="https://static.thenounproject.com/png/1751844-200.png" width="200" alt="" border="0" />
-							</div>
-							fibonacci sequence code
-						</a>
-					</div>
-					<div className="flex1">
-						<a href="/learning/connect-4">
-							<div>
-								<img src="https://static.thenounproject.com/png/5132387-200.png" width="200" alt="" border="0" />
-							</div>
-							connect-4
-						</a>
-					</div>
-				</div>
-			</div>
+			<Projects></Projects>
+			<br />
+			<h2>My Resume</h2>
+			<a href="/assets/Resume2023.PDF" target="_blank" rel="noopener noreferrer" className="resume-link">Click here to view Resume</a>
 			<br />
 			<h2>Contact Me</h2>
 			<p>If you would like to get in touch with me regarding job opportunities or collaboration on projects, please feel free to email me at <a href="mailto:me@roger-edge.com">me@roger-edge.com</a>.</p>
 		</div>
 	);
 }
+
+export default Home;

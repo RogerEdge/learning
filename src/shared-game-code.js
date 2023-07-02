@@ -85,6 +85,7 @@ export function onClick(
   const boardMemory=gameSession.board
   //If the game is over, prevent anymore code from running
   if (gameOver) {
+    console.warn("game is over click ignored")
     return
   }
   
@@ -146,20 +147,17 @@ export function gameWon(gameSession, winningPlayer) {
 
   setTimeout(() => {
     body.removeChild(newElement)
-  }, 10000);
+  }, 5000);
 }
 //preload winning image
 const imgUrl = 'https://i.pinimg.com/originals/cf/50/6d/cf506d6998d68de01e9171f30fc4e287.gif';
 const img = new Image();
 img.src = imgUrl;
 
-export function resetGameSession(
-  session,
-  gameSession,
-  displayControl
-) {
-  gameSession = gameSession || {}
-  console.info('game session resetting', displayControl.gameName, gameSession)
+export function resetGameSession(session,gameSession,displayControl,) {
+  gameSession = {}
+
+  //console.info('game session resetting', displayControl.gameName, gameSession)
   // const gameSession = {} 
 
   //reset players
@@ -169,15 +167,17 @@ export function resetGameSession(
   setPlayer2Emoji()
   gameSession.player1Emoji = ''
   gameSession.player2Emoji = ''*/
-
-  delete gameSession.startedAt//=Date.now()
+  
+  delete gameSession.startedAt //=Date.now()
   delete gameSession.winningPlayer
+  gameOver = false
+  document.getElementById("winner").innerHTML = ""
   gameSession.board = displayControl.blankBoard
   gameSession.currentPlayer = getPlayer1Emoji()
   setCurrentPlayer(getPlayer1Emoji())
   saveGameSession(session, gameSession, displayControl.gameName)
   displayControl.updateDisplay(gameSession)
-  console.info('🔄 game session reset', gameSession)
+  //console.info('🔄 game session reset', gameSession)
 
   return gameSession
 

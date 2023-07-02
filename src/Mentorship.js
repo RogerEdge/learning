@@ -43,7 +43,8 @@ export function Mentorship() {
       <br />
       <hr style={opacity60} />
       <br /><br />
-      <div className="flex flex-wrap">
+      <div className="pointer" >
+      <div className="flex flex-wrap" >
         <button style={text2x} className='flex1'>
           <a style={buttonLink} href="https://ackerapple.com">Acker Website</a>
         </button>
@@ -51,6 +52,7 @@ export function Mentorship() {
           <a style={buttonLink} href="https://www.linkedin.com/in/acker-apple/">Acker Linkedin</a>
         </button>
       </div>
+    </div>
     </div>
   )
 }

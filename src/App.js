@@ -1,6 +1,7 @@
 import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import './document.css';
+import './header.css';
 import { Home } from './Home';
 import { Admin } from './Admin';
 import { Keywords } from './Keywords';
@@ -9,15 +10,19 @@ import { Fib } from './Fib';
 import { Tictactoe } from './Tictactoe';
 import { NSYNC } from './NSYNC';
 import { Connect4 } from './connect-4/Connect4';
+import { CodedProjects } from './Coded-Projects';
+import { Menu } from './Menu';
 
 function App() {
   return (
     <div className="App">
-      <main-header basePath="/learning/"></main-header>
+      <Menu></Menu>
+      {/*<main-header basePath="/learning/"></main-header>*/}
       <section>
         <Routes basename="/learning">
           <Route path="/learning/" element={<Home />} />
           <Route path="/learning/home" element={<Home />} />
+          <Route path="/learning/coded-projects" element={<CodedProjects />} />
           <Route path="/learning/admin" element={<Admin />} />
           <Route path="/learning/keywords" element={<Keywords />} />
           <Route path="/learning/mentorship" element={<Mentorship />} />

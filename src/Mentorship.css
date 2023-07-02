@@ -1,11 +1,16 @@
 .profileImage {
-  max-width:200px;width: 20vw; border-radius: 50%; border: .75vw solid rgb(0, 0, 0);
+  max-width: 200px;
+  width: 20vw;
+  border-radius: 50%;
+  border: .75vw solid rgb(0, 0, 0);
 }
 
 .largePlus {
-  font-size:3em
+  font-size: 3em
 }
 
 .centeredContent {
-  display:flex;justify-content:center;align-items:center
+  display: flex;
+  justify-content: center;
+  align-items: center
 }

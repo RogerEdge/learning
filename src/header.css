@@ -1,0 +1,146 @@
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #2f3a4f;
+	color: white;
+}
+
+.brand-title {
+	color:white;
+	font-size: 1.5rem;
+	margin: 0.5rem;
+}
+
+.navbar-links ul {
+	margin: 0;
+	padding: 0;
+	display: flex;
+}
+
+.navbar-links li {
+	list-style: none;
+}
+
+.navbar-links li a {
+	text-decoration: none;
+	color: white;
+	padding: 1rem;
+	display: block;
+}
+
+.toggle-button {
+	position: absolute;
+	top: .75rem;
+	right: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 30px;
+	height: 21px;
+}
+
+.toggle-button .bar {
+	height: 3px;
+	width: 100%;
+	background-color: white;
+	border-radius: 10px
+}
+
+@media (max-width:600px) {
+	.large-menu {
+		display: none;
+	}
+}
+
+@media (max-width:700px) {
+	.toggle-button {
+		display: flex;
+	}
+
+	.navbar-links {
+		display: none;
+		width: 100%;
+	}
+
+	.navbar {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.navbar-links ul {
+		width: 100%;
+		flex-direction: column;
+	}
+
+	.navbar-links li {
+		text-align: center;
+	}
+
+	.navbar-links.active {
+		display: flex;
+	}
+
+}
+
+.menu {
+	padding: 0.5rem;
+	text-align: center;
+	border-color: white;
+	border-width: 10px;
+	border-style: solid;
+	border-left: 0;
+	border-right: 0;
+	/*overflow: auto;*/
+	white-space: no-wrap;
+	width: 100%;
+	display: inline-block;
+	margin: 0;
+}
+
+nav {
+	background-color: #2f3a4f;
+	padding: 10px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+nav a {
+	color: #fff;
+	text-decoration: none;
+	padding: 10px;
+	border-radius: 20px;
+	transition: all 0.3s ease-in-out;
+}
+
+nav a:hover {
+	background-color: #4f8cb5;
+}
+
+nav a.active {
+	background-color: #4f8cb5;
+}
+
+header {
+	background-color: #2f3a4f;
+	color: #fff;
+	padding: 20px;
+	text-align: center;
+}
+
+@media (max-width: 1160px) {
+	.menu {
+	  flex-direction: column;
+	  align-items: center;
+	}
+  
+	.menu nav {
+	  flex-direction: column;
+	  align-items: center;
+	}
+  
+	.menu nav a {
+	  margin: 0.5rem 0;
+	}
+  }

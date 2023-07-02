@@ -9,75 +9,7 @@ function load() {
 }
 
 const html = `
-<slot></slot>
-<header>
-		<h1>Roger Edge III - Aspiring Programmer</h1>
-	</header>
-  <div class='menu'>
-  <nav style='flex-wrap:wrap'>
-  <small><a href="mailto:me@roger-edge.com">me@roger-edge.com</a></small>
-  ·
-  <a href="**basePath**home">Home</a>
-  ·
-  <a href="**basePath**keywords">Program Experience</a>
-  ·
-  <a href="**basePath**Mentorship">Mentorship</a>
-  ·
-  <span id='follow-user-display' style='display:none'>
-  ·
-  <a id='follow-user-link'>Follow User</a>
-  </nav>
-  </span>
-  </div>
-	<style>
-  .menu {
-    padding: 0.5rem; text-align:center; border-color:white; border-width:10px; border-style:solid; border-left:0; border-right:0;
-  }
-
- /* button {
-	background-color: #4f8cb5;
-	color: #fff;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 20px;
-	margin-top: 50px;
-	cursor: pointer;
-	transition: all 0.3s ease-in-out;
-}
-
-.button-animate {
-	transform: scale(1.2);
-	box-shadow: 0px 0px 10px #000;
-}*/
-
-  nav {
-	background-color: #2f3a4f;
-	padding: 10px;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-}
-nav a {
-	color: #fff;
-	text-decoration: none;
-	padding: 10px;
-	border-radius: 20px;
-	transition: all 0.3s ease-in-out;
-}
-nav a:hover {
-	background-color: #4f8cb5;
-}
-nav a.active {
-	background-color: #4f8cb5;
-}
-
-	header {
-		background-color: #2f3a4f;
-		color: #fff;
-		padding: 20px;
-		text-align: center;
-	}
-	</style>
+<Menu></Menu>
 	`
 
 class HelloWorld extends HTMLElement {
@@ -89,6 +21,19 @@ class HelloWorld extends HTMLElement {
 		const htmlReplaced = html.replace(/\*\*basePath\*\*/g, endBasePath);
 		//shadow.activeElement.getAttribute('')
 		shadow.innerHTML = htmlReplaced
+		const toggleButton = shadow.querySelectorAll(".toggle-button")[0]
+		const navbarLinks = shadow.querySelectorAll('.navbar-links')[0]
+
+		toggleButton.addEventListener('click', () => {
+			if(navbarLinks.classList.contains("active")){
+
+				navbarLinks.classList.remove('active')
+			}else{
+				navbarLinks.classList.add('active')
+
+			}
+		})
+
 	}
 
 
@@ -151,7 +96,7 @@ export function saveSession(session) {
 		throw message
 	}
 	localStorage.session = JSON.stringify(session)
-	console.info('💾 session saved',session)
+	console.info('💾 session saved', session)
 }
 
 function saveNsyncCode(code) {
@@ -196,9 +141,9 @@ export function checkUserStatus() {
 		.catch(error => console.error(error));
 }
 
-export let refetchHook=refetchUserHook
+export let refetchHook = refetchUserHook
 export function setUserHook(hook) {
-	refetchHook=hook
+	refetchHook = hook
 }
 
 //this function is meant to be overwritten,it is called every refetch
@@ -245,7 +190,7 @@ function refetch() {
 
 				session.userSession = session.userSession || {}
 				session.userSession = mergeObjects(session.userSession, data)
-				
+
 				refetchUserHook(session.userSession)
 				saveSession(session)
 
@@ -265,7 +210,7 @@ function refetch() {
 
 export function getUserSession() {
 	const session = getSession()
-	if(session.isAdmin){
+	if (session.isAdmin) {
 		return session.userSession
 	}
 	return session
@@ -275,7 +220,7 @@ export function pushUserSession(userSession) {
 	// push all of my data
 	let session = getSession()
 
-	if ( !session.code ) {
+	if (!session.code) {
 		console.warn('🟠 Not connected. Data not pushed')
 		return
 	}
@@ -284,9 +229,9 @@ export function pushUserSession(userSession) {
 		session.userSession = session.userSession || {}
 		session.userSession = mergeObjects(session.userSession, userSession)
 		session.userSession.lastUpdatedAt = Date.now()
-	}else{
+	} else {
 		session = mergeObjects(session, userSession)
-		session.lastUpdatedAt=Date.now()
+		session.lastUpdatedAt = Date.now()
 	}
 
 	console.info('pushing data', session)
@@ -326,6 +271,7 @@ function mergeObjects(obj1, obj2) {
 
 	return result;
 }
+
 
 // !! always the last thing in this file !!
 load()
