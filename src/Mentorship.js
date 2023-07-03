@@ -22,7 +22,7 @@ export function Mentorship() {
           </div>
           <span className="largePlus">+</span>
           <div>
-            <img src="https://media.licdn.com/dms/image/C4E03AQGexv4peFAy9Q/profile-displayphoto-shrink_800_800/0/1560199522202?e=1686182400&amp;v=beta&amp;t=xyCzv59XdeSMTg57f4kKbw7szs4trgetn1ncemVSElc" alt="Acker img" className="img profileImage" />
+            <img src="https://media.licdn.com/dms/image/C4E03AQGexv4peFAy9Q/profile-displayphoto-shrink_400_400/0/1560199522202?e=1694044800&v=beta&t=YL3mNgH_JWMoGQQQbv3CaxKS2_OeK5_aOD8AVEZYoyI" alt="Acker img" className="img profileImage" />
             <div>Acker Apple</div>
           </div>
         </div>
