@@ -20,7 +20,7 @@ export function Menu() {
 						·
 						<Link to="/learning/coded-projects">🔨 Coded Projects</Link>
 						·
-						<a href="/assets/Resume2023.PDF" target="_blank" rel="noopener noreferrer" className="resume-link">📄 View Resume</a>
+						<a href="/assets/CurrentResume.pdf" target="_blank" rel="noopener noreferrer" className="resume-link">📄 View Resume</a>
 						·
 						<small><a href="mailto:me@roger-edge.com">📧 me@roger-edge.com</a></small>
 						·

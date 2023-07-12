@@ -133,3 +133,21 @@ section {
 	box-sizing: border-box;
 	word-wrap: break-word;
 }
+
+.video-wrapper {
+	position: relative;
+	max-width: 785px;
+	max-height: 315px;
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: "100%";
+  }
+
+  .video-wrapper iframe {
+	width: 80%;
+	height: 40vh;
+	max-height: 385px ;
+  }
+  
